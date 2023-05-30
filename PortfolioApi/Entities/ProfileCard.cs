@@ -15,7 +15,9 @@ namespace PortfolioApi.Entities
         [Required]
         [MaxLength(50)]
         public string LastName { get; set; }
+        [MaxLength(10)]
         public int Age { get; set; }
+
         public ICollection<Interest> Interests { get; set; } = new List<Interest>();
 
         public ProfileCard(string firstName, string lastName)
