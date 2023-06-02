@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ForumContext>(
-    dbContextOptions => dbContextOptions.UseSqlite("Data Source=Forum.db"));
+    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:ForumDBConnectionString"]));
 
 var app = builder.Build();
 
