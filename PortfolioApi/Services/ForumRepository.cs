@@ -4,6 +4,7 @@ using PortfolioApi.Entities;
 
 namespace PortfolioApi.Services
 {
+    // Right now, all of our business logic = repository 
     public class ForumRepository : IForumRepository
     {
         private readonly ForumContext _forumContext;

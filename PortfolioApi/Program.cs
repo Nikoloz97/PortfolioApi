@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PortfolioApi.DbContexts;
+using PortfolioApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ForumContext>(
     dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:ForumDBConnectionString"]));
+
+builder.Services.AddScoped<IForumRepository, ForumRepository>();
 
 var app = builder.Build();
 
