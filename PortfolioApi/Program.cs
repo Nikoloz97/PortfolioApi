@@ -17,6 +17,8 @@ builder.Services.AddDbContext<ForumContext>(
 
 builder.Services.AddScoped<IForumRepository, ForumRepository>();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -42,23 +42,27 @@ namespace PortfolioApi.Controllers
             var profileCardEntity = await _forumRepository.GetProfileCardAsync(profileCardId, areInterestsIncluded);
             if (areInterestsIncluded)
             {
-                var result = new ProfileCardDto() {
+                var result = new ProfileCardDto()
+                {
                     Id = profileCardEntity.Id,
                     Age = profileCardEntity.Age,
                     FirstName = profileCardEntity.FirstName,
-                    LastName = profileCardEntity.LastName, 
+                    LastName = profileCardEntity.LastName,
                     Interests = profileCardEntity.Interests,
                 };
                 return Ok(result);
             }
-            var result = new ProfileCardDtoWithoutInterestsDto()
+            else
             {
-                Id = profileCardEntity.Id,
-                Age = profileCardEntity.Age,
-                FirstName = profileCardEntity.FirstName,
-                LastName = profileCardEntity.LastName,
-            };
-            return Ok(result);
+                var result = new ProfileCardDtoWithoutInterestsDto()
+                {
+                    Id = profileCardEntity.Id,
+                    Age = profileCardEntity.Age,
+                    FirstName = profileCardEntity.FirstName,
+                    LastName = profileCardEntity.LastName,
+                };
+                return Ok(result);
+            }
 
 
         }
