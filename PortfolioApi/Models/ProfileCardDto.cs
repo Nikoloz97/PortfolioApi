@@ -1,6 +1,4 @@
 ﻿using PortfolioApi.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioApi.Models
 {

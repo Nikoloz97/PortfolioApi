@@ -14,7 +14,7 @@ namespace PortfolioApi.Services
             _forumContext = forumContext ?? throw new ArgumentNullException(nameof(forumContext));
         }
 
-        public async Task<IEnumerable<ProfileCard>> GetProfileCardsAsync()
+        public async Task<IEnumerable<ProfileCard>> GetAllProfileCardsAsync()
         {
             return await _forumContext.ProfileCards.OrderBy(p => p.LastName).ToListAsync();
         }
@@ -23,10 +23,14 @@ namespace PortfolioApi.Services
         {
             if (isInterestsListIncluded)
             {
-                return await _forumContext.ProfileCards.Include(p => p.Interests)
-                    .Where(p => p.Id == profileCardId).FirstOrDefaultAsync();
+                return await _forumContext.ProfileCards
+                                            .Include(p => p.Interests)
+                                            .Where(p => p.Id == profileCardId)
+                                            .FirstOrDefaultAsync();
             }
-            return await _forumContext.ProfileCards.Where(p => p.Id == profileCardId).FirstOrDefaultAsync();
+            return await _forumContext.ProfileCards
+                                            .Where(p => p.Id == profileCardId)
+                                            .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Interest>> GetInterestsForProfileCardAsync(int profileCardId)

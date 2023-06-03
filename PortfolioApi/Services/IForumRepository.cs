@@ -4,7 +4,7 @@ namespace PortfolioApi.Services
 {
     public interface IForumRepository
     {
-        public Task<IEnumerable<ProfileCard>> GetProfileCardsAsync();
+        public Task<IEnumerable<ProfileCard>> GetAllProfileCardsAsync();
 
         public Task<ProfileCard?> GetProfileCardAsync(int profileCardId, bool isInterestsListIncluded);
 
