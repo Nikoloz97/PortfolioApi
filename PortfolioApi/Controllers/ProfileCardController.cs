@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Models;
 using PortfolioApi.Services;
 
@@ -9,10 +10,12 @@ namespace PortfolioApi.Controllers
     public class ProfileCardController : Controller
     {
         private readonly IForumRepository _forumRepository;
+        private readonly IMapper _mapper;
 
-        public ProfileCardController(IForumRepository forumRepository)
+        public ProfileCardController(IForumRepository forumRepository, IMapper mapper)
         {
             _forumRepository = forumRepository ?? throw new ArgumentNullException(nameof(forumRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]
@@ -21,18 +24,7 @@ namespace PortfolioApi.Controllers
             // TODO: Create bool expression for interests (like getting singular PC)
 
             var profileCardEntities = await _forumRepository.GetAllProfileCardsAsync();
-            var results = new List<ProfileCardDtoWithoutInterestsDto>();
-            foreach (var card in profileCardEntities)
-            {
-                results.Add(new ProfileCardDtoWithoutInterestsDto
-                {
-                    Id = card.Id,
-                    Age = card.Age,
-                    FirstName = card.FirstName,
-                    LastName = card.LastName,
-                });
-            }
-            return Ok(results);
+            return Ok(_mapper.Map<IEnumerable<ProfileCardDtoWithoutInterestsDto>>(profileCardEntities));
         }
 
         [HttpGet("{profileCardId}")]
