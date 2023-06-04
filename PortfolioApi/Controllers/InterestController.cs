@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Models;
 using PortfolioApi.Services;
@@ -10,39 +11,29 @@ namespace PortfolioApi.Controllers
     public class InterestController : ControllerBase
     {
         private readonly IForumRepository _forumRepository;
+        private readonly IMapper _mapper;
 
-        public InterestController(IForumRepository forumRepository)
+        public InterestController(IForumRepository forumRepository, IMapper mapper)
         {
             _forumRepository = forumRepository ?? throw new ArgumentException(nameof(forumRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
 
         [HttpGet("{profileCardId}")]
-        public async Task<ActionResult<IEnumerable<InterestDto>>> GetInterests(int profileCardId)
+        public async Task<ActionResult<IEnumerable<InterestDto>>> GetAllInterests(int profileCardId)
         {
-            var InterestEntities = await _forumRepository.GetInterestsForProfileCardAsync(profileCardId);
-            var results = new List<InterestDto>();
-            foreach (var interestEntity in InterestEntities) {
-                results.Add(new InterestDto
-                {
-                    Id = interestEntity.Id,
-                    Description = interestEntity.Description,
-                });
-            }
-            return Ok(results);
+            var interestEntities = await _forumRepository.GetInterestsForProfileCardAsync(profileCardId);
+
+            return Ok(_mapper.Map<IEnumerable<InterestDto>>(interestEntities));
         }
 
         [HttpGet("{profileCardId}/{interestId}")]
-        public async Task<ActionResult<IEnumerable<InterestDto>>> GetInterests(int profileCardId, int interestId)
+        public async Task<ActionResult<InterestDto>> GetInterest(int profileCardId, int interestId)
         {
-            var InterestEntity = await _forumRepository.GetInterestForProfileCardAsync(profileCardId, interestId);
-            var result = new InterestDto()
-            {
-                Id = InterestEntity.Id,
-                Description = InterestEntity.Description
-            };
+            var interestEntity = await _forumRepository.GetInterestForProfileCardAsync(profileCardId, interestId);
 
-            return Ok(result);
+            return Ok(_mapper.Map<InterestDto>(interestEntity));
         }
 
 

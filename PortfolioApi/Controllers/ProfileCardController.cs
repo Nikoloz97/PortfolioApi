@@ -28,35 +28,17 @@ namespace PortfolioApi.Controllers
         }
 
         [HttpGet("{profileCardId}")]
-        public async Task<ActionResult<IEnumerable<ProfileCardDtoWithoutInterestsDto>>> GetProfileCard(int profileCardId, bool areInterestsIncluded)
+        public async Task<ActionResult<ProfileCardDto>> GetProfileCard(int profileCardId, bool areInterestsIncluded = false)
         {
  
             var profileCardEntity = await _forumRepository.GetProfileCardAsync(profileCardId, areInterestsIncluded);
-            if (areInterestsIncluded)
+
+            if (profileCardEntity == null)
             {
-                var result = new ProfileCardDto()
-                {
-                    Id = profileCardEntity.Id,
-                    Age = profileCardEntity.Age,
-                    FirstName = profileCardEntity.FirstName,
-                    LastName = profileCardEntity.LastName,
-                    Interests = profileCardEntity.Interests,
-                };
-                return Ok(result);
-            }
-            else
-            {
-                var result = new ProfileCardDtoWithoutInterestsDto()
-                {
-                    Id = profileCardEntity.Id,
-                    Age = profileCardEntity.Age,
-                    FirstName = profileCardEntity.FirstName,
-                    LastName = profileCardEntity.LastName,
-                };
-                return Ok(result);
+                return NotFound();
             }
 
-
+            return Ok(_mapper.Map<ProfileCardDto>(profileCardEntity));
         }
     }
 }
