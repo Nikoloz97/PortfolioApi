@@ -19,18 +19,21 @@ namespace PortfolioApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProfileCardDtoWithoutInterestsDto>>> GetAllProfileCards()
+        public async Task<IActionResult> GetAllProfileCards(bool areInterestsIncluded = false)
         {
             // TODO: Create bool expression for interests (like getting singular PC)
 
-            var profileCardEntities = await _forumRepository.GetAllProfileCardsAsync();
+            var profileCardEntities = await _forumRepository.GetAllProfileCardsAsync(areInterestsIncluded);
+            if (areInterestsIncluded)
+            {
+                return Ok(_mapper.Map<IEnumerable<ProfileCardDto>>(profileCardEntities));
+            }
             return Ok(_mapper.Map<IEnumerable<ProfileCardDtoWithoutInterestsDto>>(profileCardEntities));
         }
 
         [HttpGet("{profileCardId}")]
-        public async Task<ActionResult<ProfileCardDto>> GetProfileCard(int profileCardId, bool areInterestsIncluded = false)
-        {
- 
+        public async Task<IActionResult> GetProfileCard(int profileCardId, bool areInterestsIncluded = false)
+        { 
             var profileCardEntity = await _forumRepository.GetProfileCardAsync(profileCardId, areInterestsIncluded);
 
             if (profileCardEntity == null)
@@ -38,7 +41,12 @@ namespace PortfolioApi.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<ProfileCardDto>(profileCardEntity));
+            if (areInterestsIncluded)
+            {
+                return Ok(_mapper.Map<ProfileCardDto>(profileCardEntity));
+            }
+
+            return Ok(_mapper.Map<ProfileCardDtoWithoutInterestsDto>(profileCardEntity));
         }
     }
 }

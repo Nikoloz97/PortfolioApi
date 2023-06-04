@@ -7,6 +7,7 @@ namespace PortfolioApi.Profiles
         public ProfileCardProfile()
         {
              CreateMap<Entities.ProfileCard, Models.ProfileCardDtoWithoutInterestsDto>();
+             CreateMap<Entities.ProfileCard, Models.ProfileCardDto>();
         }
     }
 }

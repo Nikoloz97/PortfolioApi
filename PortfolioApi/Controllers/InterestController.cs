@@ -23,6 +23,11 @@ namespace PortfolioApi.Controllers
         [HttpGet("{profileCardId}")]
         public async Task<ActionResult<IEnumerable<InterestDto>>> GetAllInterests(int profileCardId)
         {
+            if (!await _forumRepository.ProfileCardExistsAsync(profileCardId))
+            {
+                return NotFound();
+            }
+
             var interestEntities = await _forumRepository.GetInterestsForProfileCardAsync(profileCardId);
 
             return Ok(_mapper.Map<IEnumerable<InterestDto>>(interestEntities));
@@ -31,7 +36,16 @@ namespace PortfolioApi.Controllers
         [HttpGet("{profileCardId}/{interestId}")]
         public async Task<ActionResult<InterestDto>> GetInterest(int profileCardId, int interestId)
         {
+            if (!await _forumRepository.ProfileCardExistsAsync(profileCardId))
+            {
+                return NotFound();
+            }
             var interestEntity = await _forumRepository.GetInterestForProfileCardAsync(profileCardId, interestId);
+
+            if (interestEntity == null)
+            {
+                return NotFound();
+            }
 
             return Ok(_mapper.Map<InterestDto>(interestEntity));
         }

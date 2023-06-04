@@ -14,9 +14,18 @@ namespace PortfolioApi.Services
             _forumContext = forumContext ?? throw new ArgumentNullException(nameof(forumContext));
         }
 
-        public async Task<IEnumerable<ProfileCard>> GetAllProfileCardsAsync()
+        public async Task<IEnumerable<ProfileCard>> GetAllProfileCardsAsync(bool areInterestsIncluded)
         {
-            return await _forumContext.ProfileCards.OrderBy(p => p.LastName).ToListAsync();
+            if (areInterestsIncluded)
+            {
+                return await _forumContext.ProfileCards
+                                        .Include(p => p.Interests)
+                                        .OrderBy(p => p.LastName)
+                                        .ToListAsync();
+            }
+            return await _forumContext.ProfileCards
+                                        .OrderBy(p => p.LastName)
+                                        .ToListAsync();
         }
 
         public async Task<ProfileCard?> GetProfileCardAsync(int profileCardId, bool isInterestsListIncluded)
@@ -31,6 +40,11 @@ namespace PortfolioApi.Services
             return await _forumContext.ProfileCards
                                             .Where(p => p.Id == profileCardId)
                                             .FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> ProfileCardExistsAsync(int profileCardId)
+        {
+            return await _forumContext.ProfileCards.AnyAsync(pc => pc.Id == profileCardId);
         }
 
         public async Task<IEnumerable<Interest>> GetInterestsForProfileCardAsync(int profileCardId)
