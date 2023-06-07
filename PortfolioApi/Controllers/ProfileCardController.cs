@@ -19,11 +19,10 @@ namespace PortfolioApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProfileCards(bool areInterestsIncluded = false)
+        public async Task<IActionResult> GetAllProfileCards(bool areInterestsIncluded = true)
         {
-            // TODO: Create bool expression for interests (like getting singular PC)
-
             var profileCardEntities = await _forumRepository.GetAllProfileCardsAsync(areInterestsIncluded);
+
             if (areInterestsIncluded)
             {
                 return Ok(_mapper.Map<IEnumerable<ProfileCardDto>>(profileCardEntities));
@@ -32,7 +31,7 @@ namespace PortfolioApi.Controllers
         }
 
         [HttpGet("{profileCardId}")]
-        public async Task<IActionResult> GetProfileCard(int profileCardId, bool areInterestsIncluded = false)
+        public async Task<IActionResult> GetProfileCard(int profileCardId, bool areInterestsIncluded = true)
         { 
             var profileCardEntity = await _forumRepository.GetProfileCardAsync(profileCardId, areInterestsIncluded);
 
