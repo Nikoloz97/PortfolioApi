@@ -16,7 +16,10 @@ namespace PortfolioApi.Entities
         [MaxLength(50)]
         public string LastName { get; set; }
         [MaxLength(10)]
-        public int Age { get; set; }
+        public int? Age { get; set; }
+
+        [MaxLength(2000)]
+        public string? ProfileURL { get; set; } 
 
         public ICollection<Interest> Interests { get; set; } = new List<Interest>();
 

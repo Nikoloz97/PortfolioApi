@@ -50,10 +50,6 @@ namespace PortfolioApi.Controllers
             return Ok(_mapper.Map<InterestDto>(interestEntity));
         }
 
-
-
-
-
     }
 
 }
