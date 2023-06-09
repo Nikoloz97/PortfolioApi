@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PortfolioApi.Entities.Forum;
 
 namespace PortfolioApi.Profiles
 {
@@ -6,8 +7,8 @@ namespace PortfolioApi.Profiles
     {
         public ProfileCardProfile()
         {
-             CreateMap<Entities.ProfileCard, Models.ProfileCardDtoWithoutInterestsDto>();
-             CreateMap<Entities.ProfileCard, Models.ProfileCardDto>();
+             CreateMap<ProfileCard, Models.ProfileCardDtoWithoutInterestsDto>();
+             CreateMap<ProfileCard, Models.ProfileCardDto>();
         }
     }
 }

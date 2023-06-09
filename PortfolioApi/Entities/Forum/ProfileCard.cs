@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PortfolioApi.Entities
+namespace PortfolioApi.Entities.Forum
 {
     public class ProfileCard
     {
@@ -19,7 +19,7 @@ namespace PortfolioApi.Entities
         public int? Age { get; set; }
 
         [MaxLength(2000)]
-        public string? ProfileURL { get; set; } 
+        public string? ProfileURL { get; set; }
 
         public ICollection<Interest> Interests { get; set; } = new List<Interest>();
 
@@ -27,7 +27,7 @@ namespace PortfolioApi.Entities
         {
             FirstName = firstName;
             LastName = lastName;
-            
+
         }
     }
 }

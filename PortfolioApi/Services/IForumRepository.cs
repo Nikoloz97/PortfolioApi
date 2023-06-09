@@ -1,4 +1,4 @@
-﻿using PortfolioApi.Entities;
+﻿using PortfolioApi.Entities.Forum;
 
 namespace PortfolioApi.Services
 {

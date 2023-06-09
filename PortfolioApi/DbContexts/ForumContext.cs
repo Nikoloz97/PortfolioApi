@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PortfolioApi.Entities;
+using PortfolioApi.Entities.Forum;
 
 namespace PortfolioApi.DbContexts
 {

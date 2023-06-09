@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PortfolioApi.Entities
+namespace PortfolioApi.Entities.Forum
 {
     public class Interest
     {
@@ -16,7 +16,7 @@ namespace PortfolioApi.Entities
         [ForeignKey("ProfileCardID")]
         // Below = "navigation property" (connect with ProfileCard Entity)
         public ProfileCard? ProfileCard { get; set; }
-        public int ProfileCardID { get; set; }  
+        public int ProfileCardID { get; set; }
 
         // Statement that every interest requires a description
         public Interest(string description)
