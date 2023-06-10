@@ -1,6 +1,4 @@
-﻿using PortfolioApi.Entities;
-
-namespace PortfolioApi.Models
+﻿namespace PortfolioApi.Models
 {
     public class InterestDto
     {

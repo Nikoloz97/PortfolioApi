@@ -20,6 +20,9 @@ builder.Services.AddDbContext<UserContext>(
 
 builder.Services.AddScoped<IForumRepository, ForumRepository>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
