@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PortfolioApi.DbContexts;
-using PortfolioApi.Services;
+using PortfolioApi.Services.Forum;
+using PortfolioApi.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
 

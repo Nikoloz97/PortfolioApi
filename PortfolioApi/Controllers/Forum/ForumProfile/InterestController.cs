@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PortfolioApi.Models;
-using PortfolioApi.Services;
+using PortfolioApi.Models.Forum.ForumProfile;
+using PortfolioApi.Services.Forum;
 
-namespace PortfolioApi.Controllers
+namespace PortfolioApi.Controllers.Forum.ForumProfile
 {
     [Route("api/forum/[controller]")]
     [ApiController]
@@ -20,27 +20,27 @@ namespace PortfolioApi.Controllers
         }
 
 
-        [HttpGet("{profileCardId}")]
-        public async Task<ActionResult<IEnumerable<InterestDto>>> GetAllInterests(int profileCardId)
+        [HttpGet("{forumProfileId}")]
+        public async Task<ActionResult<IEnumerable<InterestDto>>> GetAllInterests(int forumProfileId)
         {
-            if (!await _forumRepository.ProfileCardExistsAsync(profileCardId))
+            if (!await _forumRepository.ForumProfileExistsAsync(forumProfileId))
             {
                 return NotFound();
             }
 
-            var interestEntities = await _forumRepository.GetInterestsForProfileCardAsync(profileCardId);
+            var interestEntities = await _forumRepository.GetAllInterestsForForumProfileAsync(forumProfileId);
 
             return Ok(_mapper.Map<IEnumerable<InterestDto>>(interestEntities));
         }
 
-        [HttpGet("{profileCardId}/{interestId}")]
-        public async Task<ActionResult<InterestDto>> GetInterest(int profileCardId, int interestId)
+        [HttpGet("{forumProfileId}/{interestId}")]
+        public async Task<ActionResult<InterestDto>> GetInterest(int forumProfileId, int interestId)
         {
-            if (!await _forumRepository.ProfileCardExistsAsync(profileCardId))
+            if (!await _forumRepository.ForumProfileExistsAsync(forumProfileId))
             {
                 return NotFound();
             }
-            var interestEntity = await _forumRepository.GetInterestForProfileCardAsync(profileCardId, interestId);
+            var interestEntity = await _forumRepository.GetInterestForForumProfileAsync(forumProfileId, interestId);
 
             if (interestEntity == null)
             {

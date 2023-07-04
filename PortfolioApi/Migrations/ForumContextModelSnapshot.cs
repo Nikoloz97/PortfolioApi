@@ -35,7 +35,7 @@ namespace PortfolioApi.Migrations
 
                     b.HasIndex("ProfileCardID");
 
-                    b.ToTable("Interests");
+                    b.ToTable("Interests", (string)null);
 
                     b.HasData(
                         new
@@ -102,7 +102,7 @@ namespace PortfolioApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProfileCards");
+                    b.ToTable("ProfileCards", (string)null);
 
                     b.HasData(
                         new

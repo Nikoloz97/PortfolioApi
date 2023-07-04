@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using PortfolioApi.Entities.User;
+using PortfolioApi.Models.User;
 
-namespace PortfolioApi.Profiles
+namespace PortfolioApi.Profiles.User
 {
     public class UserProfile : Profile
     {
         public UserProfile()
         {
-            CreateMap<User, Models.UserDto>();
+            CreateMap<PortfolioApi.Entities.User.User, UserDto>();
         }
     }
 }

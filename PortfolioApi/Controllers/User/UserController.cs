@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PortfolioApi.Models;
-using PortfolioApi.Services;
+using PortfolioApi.Models.User;
+using PortfolioApi.Services.User;
 
-namespace PortfolioApi.Controllers
+namespace PortfolioApi.Controllers.User
 {
     [ApiController]
     [Route("api/user")]
