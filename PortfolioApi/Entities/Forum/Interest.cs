@@ -10,7 +10,7 @@ namespace PortfolioApi.Entities.Forum
         public int InterestId { get; set; }
 
         [ForeignKey("ForumProfileId")]
-        // Below = "navigation property" (connect with ProfileCard Entity)
+        // Below = "navigation property" (connect with ForumProfile Entity)
         public ForumProfile? ForumProfile { get; set; }
         public int ForumProfileId { get; set; }
 

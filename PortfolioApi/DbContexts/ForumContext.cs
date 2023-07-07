@@ -17,7 +17,7 @@ namespace PortfolioApi.DbContexts
         }
 
         // Where we can "seed our database" (start with data) 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ForumProfile>().HasData(
                 new ForumProfile("Future", "Hendrix")
@@ -128,13 +128,12 @@ namespace PortfolioApi.DbContexts
                     ForumProfileId = 3,
                     Likes = 12
                 }
-
                 );
 
 
 
             base.OnModelCreating(modelBuilder);
-        }
+        }*/
     }
 
     
