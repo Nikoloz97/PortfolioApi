@@ -19,7 +19,10 @@ namespace PortfolioApi.Entities.User
         public string Email { get; set; }
 
         [MaxLength(100)]
-        public string? DisplayName { get; set; } 
+        public string? FirstName { get; set; }
+
+        [MaxLength(100)]
+        public string? LastName { get; set; }
 
         [MaxLength(100)]    
         public string? ProfileURL { get; set; } 

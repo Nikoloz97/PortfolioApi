@@ -8,9 +8,7 @@ namespace PortfolioApi.Models.Forum.ForumProfile
     public class ForumProfileWithoutInterestsDto
     {
         public int ForumProfileId { get; set; }
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-
+        public string DisplayName { get; set; } = string.Empty;
         public int? Age { get; set; }
         public string? ProfileURL { get; set; }
 
