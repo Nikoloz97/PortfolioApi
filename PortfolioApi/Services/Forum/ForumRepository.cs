@@ -23,11 +23,11 @@ namespace PortfolioApi.Services.Forum
             {
                 return await _forumContext.ForumProfiles
                                         .Include(p => p.Interests)
-                                        .OrderBy(p => p.LastName)
+                                        .OrderBy(p => p.DisplayName)
                                         .ToListAsync();
             }
             return await _forumContext.ForumProfiles
-                                        .OrderBy(p => p.LastName)
+                                        .OrderBy(p => p.DisplayName)
                                         .ToListAsync();
         }
 

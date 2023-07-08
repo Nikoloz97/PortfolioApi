@@ -22,8 +22,6 @@ namespace PortfolioApi.Entities.Forum
         public ICollection<Interest> Interests { get; set; } = new List<Interest>();
         public ICollection<Post> Posts { get; set; } = new List<Post>();
 
-        //TODO: Think about creating a separate "follow" entity
-            // Possible benefit = follow entity will have less properties to store/keep track of 
         public ICollection<Follower> Followers { get; set; } = new List<Follower>();
         public ICollection<Following> Followings { get; set; } = new List<Following>();
 
