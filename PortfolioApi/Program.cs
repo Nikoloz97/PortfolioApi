@@ -7,9 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen();
 
@@ -22,7 +24,6 @@ builder.Services.AddDbContext<UserContext>(
 builder.Services.AddScoped<IForumRepository, ForumRepository>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

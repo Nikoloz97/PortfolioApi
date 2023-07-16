@@ -23,11 +23,15 @@ namespace PortfolioApi.Services.Forum
             {
                 return await _forumContext.ForumProfiles
                                         .Include(p => p.Interests)
-                                        .OrderBy(p => p.DisplayName)
+                                        .Include(p => p.Posts)
+                                        .Include(p => p.Followers)
+                                        .Include(p => p.Followings)
+                                        .OrderBy(p => p.ForumProfileId)
                                         .ToListAsync();
             }
             return await _forumContext.ForumProfiles
-                                        .OrderBy(p => p.DisplayName)
+                                        .Include(p => p.Posts)
+                                        .OrderBy(p => p.ForumProfileId)
                                         .ToListAsync();
         }
 
@@ -37,10 +41,16 @@ namespace PortfolioApi.Services.Forum
             {
                 return await _forumContext.ForumProfiles
                                             .Include(p => p.Interests)
+                                            .Include (p => p.Followers)
+                                            .Include (p => p.Followings)
+                                            .Include(p => p.Posts)
                                             .Where(p => p.ForumProfileId == forumProfileId)
                                             .FirstOrDefaultAsync();
             }
             return await _forumContext.ForumProfiles
+                                            .Include(p => p.Followers)
+                                            .Include(p => p.Followings)
+                                            .Include(p => p.Posts)
                                             .Where(p => p.ForumProfileId == forumProfileId)
                                             .FirstOrDefaultAsync();
         }

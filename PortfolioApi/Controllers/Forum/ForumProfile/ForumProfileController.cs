@@ -31,7 +31,7 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
         }
 
         [HttpGet("{forumProfileId}")]
-        public async Task<IActionResult> GetProfileCard(int forumProfileId, bool areInterestsIncluded = true)
+        public async Task<IActionResult> GetForumProfile(int forumProfileId, bool areInterestsIncluded = true)
         {
             var profileCardEntity = await _forumRepository.GetForumProfileAsync(forumProfileId, areInterestsIncluded);
 

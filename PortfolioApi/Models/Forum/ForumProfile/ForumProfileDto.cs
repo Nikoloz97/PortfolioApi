@@ -21,12 +21,12 @@ namespace PortfolioApi.Models.Forum.ForumProfile
         }
         public int FollowingCount
         {
-            get { return Following.Count; }
+            get { return Followings.Count; }
         }
 
         public ICollection<InterestDto> Interests { get; set; } = new List<InterestDto>();
         public ICollection<PostDto> Posts { get; set; } = new List<PostDto>();
-        public ICollection<ForumProfileDto> Followers { get; set; } = new List<ForumProfileDto>();
-        public ICollection<ForumProfileDto> Following { get; set; } = new List<ForumProfileDto>();
+        public ICollection<FollowerDto> Followers { get; set; } = new List<FollowerDto>();
+        public ICollection<FollowingDto> Followings { get; set; } = new List<FollowingDto>();
     }
 }

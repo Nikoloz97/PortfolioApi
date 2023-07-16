@@ -10,16 +10,19 @@ namespace PortfolioApi.Entities.Forum
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FollowerId { get; set; }
 
+        // Of person being followed 
         [ForeignKey("ForumProfileId")]
         public ForumProfile? ForumProfile { get; set; }
         public int ForumProfileId { get; set; }
 
+        // Of person following profile 
         [Required]
         [MaxLength(50)]
         public string DisplayName { get; set; }
 
+        // Of person following profile 
         [MaxLength(2000)]
-        public string? ProfileURL { get; set; }
+        public string? ProfileUrl { get; set; }
 
         public Follower(int forumProfileId, string displayName)
         {
