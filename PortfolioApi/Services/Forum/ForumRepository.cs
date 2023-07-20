@@ -24,6 +24,7 @@ namespace PortfolioApi.Services.Forum
                 return await _forumContext.ForumProfiles
                                         .Include(p => p.Interests)
                                         .Include(p => p.Posts)
+                                        .ThenInclude(post => post.Comments)
                                         .Include(p => p.Followers)
                                         .Include(p => p.Followings)
                                         .OrderBy(p => p.ForumProfileId)
@@ -31,6 +32,9 @@ namespace PortfolioApi.Services.Forum
             }
             return await _forumContext.ForumProfiles
                                         .Include(p => p.Posts)
+                                        .ThenInclude(p => p.Comments)
+                                        .Include(p => p.Followers)
+                                        .Include(p => p.Followings)
                                         .OrderBy(p => p.ForumProfileId)
                                         .ToListAsync();
         }

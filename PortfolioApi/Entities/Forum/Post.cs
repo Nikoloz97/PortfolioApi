@@ -19,6 +19,10 @@ namespace PortfolioApi.Entities.Forum
         [Required]
         [MaxLength(2000)]
         public string Text { get; set; }
+
+        [Required]
+        public DateTime PostedDate { get; set; }
+
         [Required]
         [Range(0, 1_000_000)]
         public int Likes { get; set; }

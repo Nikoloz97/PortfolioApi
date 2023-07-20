@@ -10,6 +10,8 @@
 
         public string? PhotoURL { get; set; }
 
+        public DateTime PostedDate { get; set; }
+
         public int CommentCount
         {
             get

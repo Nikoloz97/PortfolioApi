@@ -13,14 +13,16 @@ namespace PortfolioApi.Entities.Forum
         public Post? Post { get; set; }
         public int PostId { get; set; }
 
-        [ForeignKey("ForumProfileId")]
-        public ForumProfile? ForumProfile { get; set; }
-        public int ForumProfileId { get; set; }
-
         [Required]
         [MaxLength(2000)]
         public string Text { get; set; }
-
+        [Required]
+        public DateTime CommentDate { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string DisplayName { get; set; }
+        [MaxLength(2000)]
+        public string? ProfileUrl { get; set; }
 
         public int Likes { get; set; } 
         public int Flags { get; set; } 
