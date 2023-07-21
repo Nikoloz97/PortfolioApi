@@ -86,6 +86,34 @@ namespace PortfolioApi.DbContexts
                     PostedDate = new DateTime(2023, 07, 09, 17, 38, 15),
                     PhotoURL = "https://i.iheart.com/v3/re/new_assets/6059042c7270e66c113c9c35?ops=contain(1480,0)"
                 },
+                new Post("Test Title", "Test Text")
+                {
+                    PostId = 4,
+                    ForumProfileId = 1,
+                    PostedDate = new DateTime(2023, 07, 10, 17, 38, 15),
+                    PhotoURL = "https://i.iheart.com/v3/re/new_assets/6059042c7270e66c113c9c35?ops=contain(1480,0)"
+                },
+                new Post("Test Title 2", "Test Text 2")
+                {
+                    PostId = 5,
+                    ForumProfileId = 1,
+                    PostedDate = new DateTime(2023, 07, 11, 17, 38, 15),
+                    PhotoURL = "https://i.iheart.com/v3/re/new_assets/6059042c7270e66c113c9c35?ops=contain(1480,0)"
+                },
+                new Post("Test Title 3", "Test Text 3")
+                {
+                    PostId = 6,
+                    ForumProfileId = 1,
+                    PostedDate = new DateTime(2023, 07, 12, 17, 38, 15),
+                    PhotoURL = "https://i.iheart.com/v3/re/new_assets/6059042c7270e66c113c9c35?ops=contain(1480,0)"
+                },
+                new Post("Test Title 4", "Test Text 4")
+                {
+                    PostId = 7,
+                    ForumProfileId = 1,
+                    PostedDate = new DateTime(2023, 07, 13, 17, 38, 15),
+                    PhotoURL = "https://i.iheart.com/v3/re/new_assets/6059042c7270e66c113c9c35?ops=contain(1480,0)"
+                },
                 new Post("Is Josh a Good Brother", "The answer is yes - he puts up with a lot of my BS")
                 {
                     PostId = 2,
