@@ -19,11 +19,19 @@ namespace PortfolioApi.Services.User
                                     .OrderBy(x => x.UserId)
                                     .ToListAsync();
         }
-        public async Task<PortfolioApi.Entities.User.User?> GetUserAsync(string username)
+        public async Task<PortfolioApi.Entities.User.User?> GetUserAsync(string username, string password)
         {
+            bool doesUserExist = await UserExistsAsync(username);
+            if (!doesUserExist)
+            {
+                
+            }
+            else
+            {
             return await _userContext.Users
                                         .Where(x => x.Username == username)
                                         .FirstOrDefaultAsync();
+            }
         }
 
         public async Task<bool> UserExistsAsync(string username)
