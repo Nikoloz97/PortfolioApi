@@ -25,7 +25,7 @@ namespace PortfolioApi.Controllers.User
             return Ok(_mapper.Map<IEnumerable<UserDto>>(UserEntities));
         }
 
-        [HttpGet("{username}")]
+        [HttpGet("{username}/{password}")]
         public async Task<IActionResult> GetUser(string username, string password)
         {
             var UserEntity = await _userRepository.GetUserAsync(username, password);

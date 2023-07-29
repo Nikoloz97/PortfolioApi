@@ -7,6 +7,6 @@ namespace PortfolioApi.Services.User
     {
         Task<IEnumerable<PortfolioApi.Entities.User.User>> GetAllUsersAsync();
         Task<PortfolioApi.Entities.User.User?> GetUserAsync(string username, string password);
-        Task<bool> UserExistsAsync(string username);
+        Task<bool> DoesUsernameExistAsync(string username);
     }
 }

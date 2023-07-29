@@ -1,5 +1,9 @@
+using Microsoft.AspNetCore.Diagnostics;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PortfolioApi.DbContexts;
+using PortfolioApi.Exceptions;
 using PortfolioApi.Services.Forum;
 using PortfolioApi.Services.User;
 
@@ -42,6 +46,40 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        context.Response.ContentType = "application/json";
+
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        if (exception is UsernameNotFoundException)
+        {
+            var errorResponse = new
+            {
+                error = new
+                {
+                    message = "The username entered does not exist. Please try again"
+                }
+            };
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(errorResponse));
+        }
+        else if (exception is PasswordNotFoundException)
+        {
+            var errorResponse = new
+            {
+                error = new
+                {
+                    message = "The password for username entered does not exist. Please try again"
+                }
+            };
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(errorResponse));
+        }
+
+    });
+});
 
 app.UseHttpsRedirection();
 

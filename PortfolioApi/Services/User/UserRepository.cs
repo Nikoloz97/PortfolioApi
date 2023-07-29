@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using Microsoft.EntityFrameworkCore;
 using PortfolioApi.DbContexts;
 using PortfolioApi.Entities.User;
 using PortfolioApi.Models;
+using PortfolioApi.Exceptions;
 
 namespace PortfolioApi.Services.User
 {
@@ -21,20 +23,27 @@ namespace PortfolioApi.Services.User
         }
         public async Task<PortfolioApi.Entities.User.User?> GetUserAsync(string username, string password)
         {
-            bool doesUserExist = await UserExistsAsync(username);
-            if (!doesUserExist)
+            bool doesUserNameExist = await DoesUsernameExistAsync(username);
+            if (!doesUserNameExist)
             {
-                
+                throw new UsernameNotFoundException();
             }
             else
             {
-            return await _userContext.Users
-                                        .Where(x => x.Username == username)
-                                        .FirstOrDefaultAsync();
+                Entities.User.User? potentialUser =  await _userContext.Users
+                                            .Where(x => x.Username == username && x.Password == password)
+                                            .FirstOrDefaultAsync();
+
+                if (potentialUser == null)
+                {
+                    throw new PasswordNotFoundException();
+                }
+
+                else { return potentialUser; }
             }
         }
 
-        public async Task<bool> UserExistsAsync(string username)
+        public async Task<bool> DoesUsernameExistAsync(string username)
         {
             return await _userContext.Users.AnyAsync(x => x.Username == username);
         }
