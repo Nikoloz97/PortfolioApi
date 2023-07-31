@@ -47,5 +47,11 @@ namespace PortfolioApi.Services.User
         {
             return await _userContext.Users.AnyAsync(x => x.Username == username);
         }
+
+        public async Task CreateUserAsync(Entities.User.User newUserEntity)
+        {
+            _userContext.Users.Add(newUserEntity);
+            await _userContext.SaveChangesAsync();
+        }
     }
 }

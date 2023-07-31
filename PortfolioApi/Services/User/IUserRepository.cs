@@ -8,5 +8,6 @@ namespace PortfolioApi.Services.User
         Task<IEnumerable<PortfolioApi.Entities.User.User>> GetAllUsersAsync();
         Task<PortfolioApi.Entities.User.User?> GetUserAsync(string username, string password);
         Task<bool> DoesUsernameExistAsync(string username);
+        Task CreateUserAsync(Entities.User.User newUserEntity);
     }
 }

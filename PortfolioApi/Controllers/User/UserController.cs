@@ -25,12 +25,30 @@ namespace PortfolioApi.Controllers.User
             return Ok(_mapper.Map<IEnumerable<UserDto>>(UserEntities));
         }
 
-        [HttpGet("{username}/{password}")]
+        [HttpGet("{username}/{password}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(string username, string password)
         {
             var UserEntity = await _userRepository.GetUserAsync(username, password);
 
             return Ok(_mapper.Map<UserDto>(UserEntity));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto newUser)
+        {
+            var newUserEntity = _mapper.Map<Entities.User.User>(newUser);
+
+            await _userRepository.CreateUserAsync(newUserEntity);
+
+            var newUserToReturn = _mapper.Map<Models.User.UserDto>(newUserEntity);
+
+            return CreatedAtRoute("GetUser",
+                new
+                {
+                    userId = newUserToReturn.UserId,
+                },
+                newUserToReturn);
+
         }
 
     }
