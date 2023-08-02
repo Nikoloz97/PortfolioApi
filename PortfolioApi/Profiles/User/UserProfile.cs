@@ -10,6 +10,7 @@ namespace PortfolioApi.Profiles.User
         {
             CreateMap<PortfolioApi.Entities.User.User, UserDto>();
             CreateMap<UserDto, Entities.User.User>().ReverseMap();
+            CreateMap<UserDto_Creation, Entities.User.User>();
         }
     }
 }

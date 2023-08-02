@@ -34,7 +34,7 @@ namespace PortfolioApi.Controllers.User
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto newUser)
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto_Creation newUser)
         {
             var newUserEntity = _mapper.Map<Entities.User.User>(newUser);
 
@@ -45,7 +45,8 @@ namespace PortfolioApi.Controllers.User
             return CreatedAtRoute("GetUser",
                 new
                 {
-                    userId = newUserToReturn.UserId,
+                    username = newUserToReturn.Username,
+                    password = newUserToReturn.Password
                 },
                 newUserToReturn);
 
