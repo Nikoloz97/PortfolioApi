@@ -1,6 +1,6 @@
 ﻿namespace PortfolioApi.Models.User
 {
-    public class UserDto
+    public class UserDto_Return
     {
         public int UserId { get; set; }
         public string Username { get; set; } = string.Empty;

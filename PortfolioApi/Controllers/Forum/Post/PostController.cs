@@ -33,7 +33,7 @@ namespace PortfolioApi.Controllers.Forum.Post
         {
             var commentEntities = await _forumRepository.GetPostForForumProfileAsync(forumProfileId, postId);
 
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(commentEntities));
+            return Ok(_mapper.Map<IEnumerable<UserDto_Return>>(commentEntities));
         }
     }
 }

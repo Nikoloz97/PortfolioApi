@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PortfolioApi.Entities.User;
 using PortfolioApi.Models.User;
 using PortfolioApi.Services.User;
 
@@ -22,7 +23,7 @@ namespace PortfolioApi.Controllers.User
         {
             var UserEntities = await _userRepository.GetAllUsersAsync();
 
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(UserEntities));
+            return Ok(_mapper.Map<IEnumerable<UserDto_Return>>(UserEntities));
         }
 
         [HttpGet("{username}/{password}", Name = "GetUser")]
@@ -30,17 +31,34 @@ namespace PortfolioApi.Controllers.User
         {
             var UserEntity = await _userRepository.GetUserAsync(username, password);
 
-            return Ok(_mapper.Map<UserDto>(UserEntity));
+            return Ok(_mapper.Map<UserDto_Return>(UserEntity));
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserDto_Creation newUser)
+        public async Task<ActionResult<UserDto_Return>> CreateUser([FromForm] UserDto_Creation newUser)
         {
-            var newUserEntity = _mapper.Map<Entities.User.User>(newUser);
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newUser.ProfileURL.FileName);
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "ProfileImages", fileName);
+
+            // Creates new file under "ProfileImages" directory 
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await newUser.ProfileURL.CopyToAsync(stream);
+            }
+
+            // Manually map (due to ProfileURL)
+            var newUserEntity = new Entities.User.User(newUser.Username, newUser.Password, newUser.Email)
+            {
+                FirstName = newUser.FirstName,
+                LastName = newUser.LastName,
+                Bio = newUser.Bio,
+                ProfileURL = fileName
+            };
 
             await _userRepository.CreateUserAsync(newUserEntity);
 
-            var newUserToReturn = _mapper.Map<Models.User.UserDto>(newUserEntity);
+            var newUserToReturn = _mapper.Map<Models.User.UserDto_Return>(newUserEntity);
 
             return CreatedAtRoute("GetUser",
                 new
@@ -50,7 +68,9 @@ namespace PortfolioApi.Controllers.User
                 },
                 newUserToReturn);
 
+
         }
+
 
     }
 }
