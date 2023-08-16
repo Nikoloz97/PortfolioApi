@@ -16,7 +16,7 @@ namespace PortfolioApi.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasData(
-                new User("FHendrix09", "Nikamaria97","FHendrix@gmail.com")
+                new User("FHendrix09", "Nikamaria97", "FHendrix@gmail.com")
                 {
                     UserId = 1,
                     Bio = "Hey there! My name is Future Hendrix, welcome to my page.",

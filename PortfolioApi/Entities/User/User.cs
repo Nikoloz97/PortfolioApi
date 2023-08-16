@@ -24,8 +24,8 @@ namespace PortfolioApi.Entities.User
         [MaxLength(100)]
         public string? LastName { get; set; }
 
-        [MaxLength(100)]    
-        public string? ProfileURL { get; set; } 
+        [MaxLength(100)]
+        public string? ProfileURL { get; set; }
 
         [MaxLength(1000)]
         public string? Bio { get; set; }
