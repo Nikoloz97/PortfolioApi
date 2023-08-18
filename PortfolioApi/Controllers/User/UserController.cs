@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PortfolioApi.DataAccess.User;
 using PortfolioApi.Entities.User;
 using PortfolioApi.Models.User;
+using PortfolioApi.Services;
 using PortfolioApi.Services.User;
 
 namespace PortfolioApi.Controllers.User
@@ -12,15 +14,13 @@ namespace PortfolioApi.Controllers.User
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        // Used for returning file paths (for media) 
-        private readonly string baseURL_nonSSL = "http://localhost:5190/";
-        private readonly string baseURL_SSL = "https://localhost:7047/";
+        private readonly IUserService _userService;
 
-
-        public UserController(IUserRepository UserRepository, IMapper mapper)
+        public UserController(IUserRepository userRepository, IMapper mapper, IUserService userService)
         {
-            _userRepository = UserRepository ?? throw new ArgumentNullException(nameof(UserRepository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(UserRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpGet]
@@ -42,41 +42,13 @@ namespace PortfolioApi.Controllers.User
         [HttpPost]
         public async Task<ActionResult<UserDto_Return>> CreateUser([FromForm] UserDto_Creation newUser)
         {
-            // TODO: change guid -> date (with minutes/seconds to make it unique)
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(newUser.ProfileURL.FileName);
+            string? imageUrl = null;
 
-            // Create 'Media' directory 
-            var mediaDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Media");
-            if (!Directory.Exists(mediaDirectory))
+            if (newUser.ProfileImageFile != null && newUser.ProfileImageFile.Length != 0)
             {
-                Directory.CreateDirectory(mediaDirectory);
+                var fileName = newUser.Username + "\\" + DateTime.Now + "\\" + Path.GetExtension(newUser.ProfileImageFile.FileName);
+                imageUrl = await _userService.UploadImage(newUser.ProfileImageFile, fileName);
             }
-
-            // Create subdirectory <User.Username>
-            var userDirectory = Path.Combine(mediaDirectory, newUser.Username);
-            if (!Directory.Exists(userDirectory))
-            {
-                Directory.CreateDirectory(userDirectory);
-            }
-
-            // Create 'ProfileImage' subdirectory 
-            var profileImageDirectory = Path.Combine(userDirectory, "ProfileImage");
-
-            if (!Directory.Exists(profileImageDirectory))
-            {
-                Directory.CreateDirectory(profileImageDirectory);
-            }
-
-             // Save the file to location (e.g., "Media/<User.Username>/ProfileImage")
-            var relativeFilePath = Path.Combine("Media", newUser.Username, "ProfileImage", fileName);
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), relativeFilePath);
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await newUser.ProfileURL.CopyToAsync(stream);
-            }
-
-            // Create FullFilePath for front-end to use 
-            var FullFilePathToStore = (baseURL_nonSSL + relativeFilePath).Replace("\\", "/");
 
             // Manually map (due to ProfileURL)
             var newUserEntity = new Entities.User.User(newUser.Username, newUser.Password, newUser.Email)
@@ -84,7 +56,7 @@ namespace PortfolioApi.Controllers.User
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,
                 Bio = newUser.Bio,
-                ProfileURL = FullFilePathToStore
+                ProfileURL = imageUrl
             };
 
             await _userRepository.CreateUserAsync(newUserEntity);
@@ -98,9 +70,8 @@ namespace PortfolioApi.Controllers.User
                     password = newUserToReturn.Password
                 },
                 newUserToReturn);
-
-
         }
+
 
 
     }

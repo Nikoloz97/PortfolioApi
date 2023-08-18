@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PortfolioApi.DataAccess.Forum;
 using PortfolioApi.Models.Forum.Post;
 using PortfolioApi.Models.User;
 using PortfolioApi.Services;
-using PortfolioApi.Services.Forum;
 
 namespace PortfolioApi.Controllers.Forum.Post
 {

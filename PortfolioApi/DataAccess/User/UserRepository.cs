@@ -5,7 +5,7 @@ using PortfolioApi.Entities.User;
 using PortfolioApi.Models;
 using PortfolioApi.Exceptions;
 
-namespace PortfolioApi.Services.User
+namespace PortfolioApi.DataAccess.User
 {
     public class UserRepository : IUserRepository
     {
@@ -15,13 +15,13 @@ namespace PortfolioApi.Services.User
         {
             _userContext = userContext ?? throw new ArgumentException(nameof(userContext));
         }
-        public async Task<IEnumerable<PortfolioApi.Entities.User.User>> GetAllUsersAsync()
+        public async Task<IEnumerable<Entities.User.User>> GetAllUsersAsync()
         {
             return await _userContext.Users
                                     .OrderBy(x => x.UserId)
                                     .ToListAsync();
         }
-        public async Task<PortfolioApi.Entities.User.User?> GetUserAsync(string username, string password)
+        public async Task<Entities.User.User?> GetUserAsync(string username, string password)
         {
             bool doesUserNameExist = await DoesUsernameExistAsync(username);
             if (!doesUserNameExist)
@@ -30,7 +30,7 @@ namespace PortfolioApi.Services.User
             }
             else
             {
-                Entities.User.User? potentialUser =  await _userContext.Users
+                Entities.User.User? potentialUser = await _userContext.Users
                                             .Where(x => x.Username == username && x.Password == password)
                                             .FirstOrDefaultAsync();
 

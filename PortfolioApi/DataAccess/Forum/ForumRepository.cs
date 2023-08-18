@@ -2,7 +2,7 @@
 using PortfolioApi.DbContexts;
 using PortfolioApi.Entities.Forum;
 
-namespace PortfolioApi.Services.Forum
+namespace PortfolioApi.DataAccess.Forum
 {
     // All of business logic = repository 
     public class ForumRepository : IForumRepository
@@ -45,8 +45,8 @@ namespace PortfolioApi.Services.Forum
             {
                 return await _forumContext.ForumProfiles
                                             .Include(p => p.Interests)
-                                            .Include (p => p.Followers)
-                                            .Include (p => p.Followings)
+                                            .Include(p => p.Followers)
+                                            .Include(p => p.Followings)
                                             .Include(p => p.Posts)
                                             .Where(p => p.ForumProfileId == forumProfileId)
                                             .FirstOrDefaultAsync();

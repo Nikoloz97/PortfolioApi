@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Services;
 
-namespace PortfolioApi.Controllers.Forum.ForumProfile
+namespace PortfolioApi.Controllers.User
 {
     [ApiController]
-    [Route("api/images")]
+    [Route("api/forum/[controller]")]
     public class ImagesController : Controller
     {
         private readonly AzureStorageService _storageService;

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Models.Forum.ForumProfile;
-using PortfolioApi.Services;
-using PortfolioApi.Services.Forum;
+using PortfolioApi.DataAccess.Forum;
 
 namespace PortfolioApi.Controllers.Forum.ForumProfile
 {

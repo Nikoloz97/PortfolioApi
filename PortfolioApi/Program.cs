@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using PortfolioApi.DbContexts;
 using PortfolioApi.Exceptions;
-using PortfolioApi.Services.Forum;
+using PortfolioApi.DataAccess.Forum;
+using PortfolioApi.DataAccess.User;
 using PortfolioApi.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,8 @@ builder.Services.AddDbContext<UserContext>(
 builder.Services.AddScoped<IForumRepository, ForumRepository>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

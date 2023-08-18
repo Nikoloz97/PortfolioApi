@@ -1,6 +1,6 @@
 ﻿using PortfolioApi.Entities.Forum;
 
-namespace PortfolioApi.Services.Forum
+namespace PortfolioApi.DataAccess.Forum
 {
     public interface IForumRepository
     {
