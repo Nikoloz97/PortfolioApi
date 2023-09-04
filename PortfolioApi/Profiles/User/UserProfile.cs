@@ -8,7 +8,7 @@ namespace PortfolioApi.Profiles.User
     {
         public UserProfile()
         {
-            CreateMap<PortfolioApi.Entities.User.User, UserDto_Return>();
+            CreateMap<Entities.User.User, UserDto_Return>();
             CreateMap<UserDto_Return, Entities.User.User>().ReverseMap();
             CreateMap<UserDto_Creation, Entities.User.User>();
         }

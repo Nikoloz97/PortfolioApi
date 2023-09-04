@@ -25,4 +25,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\GeoGame\" />
+    <Folder Include="DataAccess\GeoGame\" />
+  </ItemGroup>
+
 </Project>
