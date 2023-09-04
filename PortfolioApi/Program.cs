@@ -27,7 +27,7 @@ builder.Services.AddDbContext<UserContext>(
     dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:UserDBConnectionString"]));
 
 builder.Services.AddDbContext<GeoGameContext>(
-    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:UserDBConnectionString"]));
+    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:GeoGameDBConnectionString"]));
 
 builder.Services.AddScoped<IForumRepository, ForumRepository>();
 

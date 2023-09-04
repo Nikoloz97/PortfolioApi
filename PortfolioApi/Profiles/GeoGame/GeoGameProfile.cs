@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using PortfolioApi.Models.Forum.ForumProfile;
 using PortfolioApi.Models.GeoGame;
 
 namespace PortfolioApi.Profiles.GeoGame
