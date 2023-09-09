@@ -7,11 +7,11 @@ namespace PortfolioApi.Controllers.GeoGame
 {
     [ApiController]
     [Route("api/geoGame")]
-    public class GeoCardController : Controller
+    public class GeoGameController : Controller
     {
         private readonly IGeoGameRepository _geoGameRepository;
         private readonly IMapper _mapper;
-        public GeoCardController(IGeoGameRepository geoGameRepository, IMapper mapper)
+        public GeoGameController(IGeoGameRepository geoGameRepository, IMapper mapper)
         {
             _geoGameRepository = geoGameRepository ?? throw new ArgumentNullException(nameof(geoGameRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

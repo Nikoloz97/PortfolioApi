@@ -6,6 +6,7 @@ using PortfolioApi.DbContexts;
 using PortfolioApi.Exceptions;
 using PortfolioApi.DataAccess.Forum;
 using PortfolioApi.DataAccess.User;
+using PortfolioApi.DataAccess.GeoGame;
 using PortfolioApi.Services.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,8 @@ builder.Services.AddDbContext<GeoGameContext>(
 builder.Services.AddScoped<IForumRepository, ForumRepository>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IGeoGameRepository, GeoGameRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 
