@@ -9,6 +9,7 @@
         public string Prompt { get; set; } = string.Empty;
         public string QuestionType { get; set; } = string.Empty;
         public string Answer { get; set; } = string.Empty;
+        public string? ImageUrl { get; set; }
         public string? OptionOne { get; set; }
         public string? OptionTwo { get; set; }
         public string? OptionThree { get; set; }

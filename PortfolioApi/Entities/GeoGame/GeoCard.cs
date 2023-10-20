@@ -26,6 +26,8 @@ namespace PortfolioApi.Entities.GeoGame
         public string Answer { get; set; }
 
         [MaxLength(200)]
+        public string? ImageUrl { get; set; }
+        [MaxLength(200)]
         public string? OptionOne { get; set; }
         [MaxLength(200)]
         public string? OptionTwo { get; set; }

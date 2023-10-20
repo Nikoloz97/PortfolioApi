@@ -8,6 +8,7 @@ using PortfolioApi.DataAccess.Forum;
 using PortfolioApi.DataAccess.User;
 using PortfolioApi.DataAccess.GeoGame;
 using PortfolioApi.Services.User;
+using PortfolioApi.Services.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,8 @@ builder.Services.AddScoped<IGeoGameRepository, GeoGameRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
@@ -62,7 +65,8 @@ app.UseExceptionHandler(errorApp =>
     {
         context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
         context.Response.ContentType = "application/json";
-
+        
+        // TODO: Abstract this code into exception classes
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
         if (exception is UsernameNotFoundException)
         {
