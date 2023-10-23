@@ -48,6 +48,8 @@ builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 }));
 
+builder.Services.AddSingleton(builder.Configuration);
+
 var app = builder.Build();
 
 app.UseCors("corsapp");

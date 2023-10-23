@@ -14,7 +14,6 @@ namespace PortfolioApi.Controllers.Contact
     {
         private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
-        private string _mailTo = "nikolectures@gmail.com";
 
         public ContactController(IEmailService emailService, IMapper mapper)
         {
