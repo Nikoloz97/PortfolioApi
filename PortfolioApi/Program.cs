@@ -45,7 +45,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
-builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+builder.WithOrigins("https://nicksportfolioreact.azurewebsites.net").AllowAnyMethod().AllowAnyHeader();
 }));
 
 builder.Services.AddSingleton(builder.Configuration);
