@@ -19,7 +19,7 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllForumProfiles(bool areInterestsIncluded = true)
+        public async Task<IActionResult> GetAllForumProfiles([FromQuery] bool areInterestsIncluded = true)
         {
             var forumProfileEntities = await _forumRepository.GetAllForumProfilesAsync(areInterestsIncluded);
 
