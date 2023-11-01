@@ -5,8 +5,8 @@ using PortfolioApi.DataAccess.Forum;
 
 namespace PortfolioApi.Controllers.Forum.ForumProfile
 {
-    [ApiController]
     [Route("api/forum")]
+    [ApiController]
     public class ForumProfileController : Controller
     {
         private readonly IForumRepository _forumRepository;
@@ -19,7 +19,7 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllForumProfiles([FromQuery] bool areInterestsIncluded = true)
+        public async Task<IActionResult> GetAllForumProfiles(bool areInterestsIncluded = true)
         {
             var forumProfileEntities = await _forumRepository.GetAllForumProfilesAsync(areInterestsIncluded);
 
