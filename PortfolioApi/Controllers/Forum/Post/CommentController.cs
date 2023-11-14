@@ -11,7 +11,7 @@ namespace PortfolioApi.Controllers.Forum.Post
         [HttpGet]
         public async Task<IActionResult> Test()
         {
-            return Ok("Tacos");
+            return Ok("Test");
         }
     }
 }
