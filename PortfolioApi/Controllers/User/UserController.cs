@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.DataAccess.User;
-using PortfolioApi.Entities.User;
 using PortfolioApi.Models.User;
-using PortfolioApi.Services;
+using PortfolioApi.Services.Authentication;
 using PortfolioApi.Services.User;
 
 namespace PortfolioApi.Controllers.User
@@ -15,17 +14,22 @@ namespace PortfolioApi.Controllers.User
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public UserController(IUserRepository userRepository, IMapper mapper, IUserService userService)
+        public UserController(IUserRepository userRepository, IMapper mapper, IUserService userService, IAuthService authService)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(UserRepository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
+            // TODO: Mapping should be happening in the service, not in controller
+            // Instead of awaiting for UserEntities, it should be UserDto_Return 
+
             var UserEntities = await _userRepository.GetAllUsersAsync();
 
             return Ok(_mapper.Map<IEnumerable<UserDto_Return>>(UserEntities));
@@ -42,26 +46,9 @@ namespace PortfolioApi.Controllers.User
         [HttpPost]
         public async Task<ActionResult<UserDto_Return>> CreateUser([FromForm] UserDto_Creation newUser)
         {
-            string? imageUrl = null;
+            var newUserEntity = await _userService.CreateUserAsync(newUser);
 
-            if (newUser.ProfileImageFile != null && newUser.ProfileImageFile.Length != 0)
-            {
-                var fileName = newUser.Username + "\\" + DateTime.Now + "\\" + Path.GetExtension(newUser.ProfileImageFile.FileName);
-                imageUrl = await _userService.UploadImage(newUser.ProfileImageFile, fileName);
-            }
-
-            // Manually map (due to ProfileURL)
-            var newUserEntity = new Entities.User.User(newUser.Username, newUser.Password, newUser.Email)
-            {
-                FirstName = newUser.FirstName,
-                LastName = newUser.LastName,
-                Bio = newUser.Bio,
-                ProfileURL = imageUrl
-            };
-
-            await _userRepository.CreateUserAsync(newUserEntity);
-
-            var newUserToReturn = _mapper.Map<Models.User.UserDto_Return>(newUserEntity);
+            var newUserToReturn = _mapper.Map<UserDto_Return>(newUserEntity);
 
             return CreatedAtRoute("GetUser",
                 new
