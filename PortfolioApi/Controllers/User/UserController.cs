@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using PortfolioApi.DataAccess.User;
+﻿using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Models.User;
 using PortfolioApi.Services.User;
 

@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.DataAccess.User;
-using PortfolioApi.DbContexts;
 using PortfolioApi.Exceptions;
 using PortfolioApi.Models.User;
-using PortfolioApi.Services.Authentication;
 
 namespace PortfolioApi.Services.User
 {

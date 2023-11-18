@@ -1,10 +1,5 @@
-﻿using System.Net;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PortfolioApi.DbContexts;
-using PortfolioApi.Entities.User;
-using PortfolioApi.Models;
-using PortfolioApi.Exceptions;
-using PortfolioApi.Models.User;
 
 namespace PortfolioApi.DataAccess.User
 {
