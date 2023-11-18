@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PortfolioApi.DataAccess.User;
+using PortfolioApi.DbContexts;
+using PortfolioApi.Exceptions;
 using PortfolioApi.Models.User;
 using PortfolioApi.Services.Authentication;
 
@@ -7,22 +11,64 @@ namespace PortfolioApi.Services.User
     public class UserService : IUserService
     {
         private readonly AzureStorageService _storageService;
-        private readonly IAuthService _authService;
+/*        private readonly IAuthService _authService;
+*/        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IAuthService authService)
+        public UserService(IMapper mapper, IUserRepository userRepository
+/*            IAuthService authService
+*/            )
         {
+/*            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+*/
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+
+            // TODO: Find why this works without dependency injecting _storageService  
             string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=portfolioappmedia;AccountKey=VrsNP02howxuz2XojXM4NAfYJZsIiAbSoccQvf8lXdgLTq/11qjKyl+sJn854VQ+9hW7oZ7nOy5w+ASt+pzAaQ==;EndpointSuffix=core.windows.net";
             string containerName = "profileimagescontainer";
             _storageService = new AzureStorageService(storageConnectionString, containerName);
-            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
 
-        public async Task<IActionResult> GetAllUsersAsync()
+        // Get
+
+        public async Task<IEnumerable<UserDto_Return>> GetAllUsersAsync()
         {
             var UserEntities = await _userRepository.GetAllUsersAsync();
 
-            return Ok(_mapper.Map<IEnumerable<UserDto_Return>>(UserEntities));
+            var UserDtos = _mapper.Map<IEnumerable<UserDto_Return>>(UserEntities);
+
+            return UserDtos;
         }
+
+        public async Task<UserDto_Return> GetUserAsync(string username, string password)
+        {
+            bool doesUsernameExist = await DoesUsernameExistAsync(username);
+
+            if (!doesUsernameExist)
+            {
+                throw new UsernameNotFoundException();
+            }
+            else
+            {
+                var potentialUserEntity = await _userRepository.GetUserAsync(username, password);
+
+                if (potentialUserEntity == null)
+                {
+                    throw new PasswordNotFoundException();
+                }
+
+
+                else {
+                    var UserDto = _mapper.Map<UserDto_Return>(potentialUserEntity);
+
+                    return UserDto;
+                }
+            }
+        }
+
+
+        // Post
 
         public async Task<UserDto_Return> CreateUserAsync(UserDto_Creation newUser)
         {
@@ -35,7 +81,7 @@ namespace PortfolioApi.Services.User
             }
 
             // Manually map (due to ProfileURL)
-            var newUserEntity = new Entities.User.User(newUser.Username, newUser.Password, newUser.Email)
+            var newUserEntityToCreate = new Entities.User.User(newUser.Username, newUser.Password, newUser.Email)
             {
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,
@@ -43,10 +89,21 @@ namespace PortfolioApi.Services.User
                 ProfileURL = imageUrl
             };
 
-            await _userRepository.CreateUserAsync(newUserEntity);
+            var newUserEntity = await _userRepository.CreateUserAsync(newUserEntityToCreate);
 
+            var newUserDto = _mapper.Map<UserDto_Return>(newUserEntity);
 
+            return newUserDto;
         }
+
+        // Helpers
+
+        public async Task<bool> DoesUsernameExistAsync(string username)
+        {
+            return await _userRepository.DoesUsernameExistAsync(username);
+        }
+
+        // StorageService
 
         public async Task<string> UploadImage(IFormFile imageFile, string fileName)
         {
@@ -61,6 +118,8 @@ namespace PortfolioApi.Services.User
         {
             return await _storageService.GetImageAsync(imageName);
         }
+
+        // TODO: Implement AuthService
 
     }
 }

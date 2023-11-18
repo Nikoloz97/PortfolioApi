@@ -9,6 +9,7 @@ using PortfolioApi.DataAccess.User;
 using PortfolioApi.DataAccess.GeoGame;
 using PortfolioApi.Services.User;
 using PortfolioApi.Services.Email;
+using PortfolioApi.Services.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,8 @@ builder.Services.AddScoped<IGeoGameRepository, GeoGameRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
