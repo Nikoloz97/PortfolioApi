@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PortfolioApi.DataAccess.Forum;
+﻿using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Models.Contact;
 using PortfolioApi.Models.User;
 using PortfolioApi.Services.Email;
@@ -13,12 +10,10 @@ namespace PortfolioApi.Controllers.Contact
     public class ContactController : Controller
     {
         private readonly IEmailService _emailService;
-        private readonly IMapper _mapper;
 
-        public ContactController(IEmailService emailService, IMapper mapper)
+        public ContactController(IEmailService emailService)
         {
             _emailService = emailService ?? throw new ArgumentNullException(nameof(emailService));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
 

@@ -4,9 +4,9 @@ namespace PortfolioApi.DataAccess.Forum
 {
     public interface IForumRepository
     {
-        Task<IEnumerable<ForumProfile>> GetAllForumProfilesAsync(bool areInterstsIncluded);
+        Task<IEnumerable<ForumProfile>> GetAllForumProfilesAsync();
 
-        Task<ForumProfile?> GetForumProfileAsync(int profileCardId, bool isInterestsListIncluded);
+        Task<ForumProfile?> GetForumProfileAsync(int profileCardId);
 
         Task<IEnumerable<Interest>> GetAllInterestsForForumProfileAsync(int profileCardId);
 

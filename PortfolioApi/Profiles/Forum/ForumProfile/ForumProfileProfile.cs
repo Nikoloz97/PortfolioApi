@@ -8,7 +8,6 @@ namespace PortfolioApi.Profiles.Forum.ForumProfile
     {
         public ForumProfileProfile()
         {
-            CreateMap<PortfolioApi.Entities.Forum.ForumProfile, ForumProfileWithoutInterestsDto>();
             CreateMap<PortfolioApi.Entities.Forum.ForumProfile, ForumProfileDto>();
         }
     }

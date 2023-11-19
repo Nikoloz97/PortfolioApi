@@ -1,18 +1,14 @@
 ﻿using PortfolioApi.Models.Contact;
-using System.Net.Mail;
 using System.Net;
-using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Threading.Tasks;
 
 namespace PortfolioApi.Services.Email
 {
     public class EmailService  : IEmailService
     {
         private readonly IConfiguration _configuration;
-        // TODO: Make _mailFrom a contact email service (e.g. NickPortfolioEmailService@gmail.com) 
+        // TODO: Make _mailFrom a contact email service (e.g. NicksPortfolioEmailService@gmail.com) 
         private string _mailFrom = "nikolectures@gmail.com";
 
 

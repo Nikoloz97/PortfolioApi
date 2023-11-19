@@ -2,14 +2,16 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Controllers.Forum.ForumProfile;
 using PortfolioApi.DataAccess.Forum;
-using PortfolioApi.Entities.Forum;
+using PortfolioApi.Models.Forum.ForumProfile;
+using PortfolioApi.Services.Forum;
 
 namespace PortfolioTests.Controllers
 {
     [TestFixture]
     public class Tests
     {
-        private ForumProfileController _controller;
+        private ForumProfileController _forumController;
+        private Mock<IForumProfileService> _mockForumService;
         private Mock<IForumRepository> _mockForumRepository;
         private Mock<IMapper> _mapper;
 
@@ -18,24 +20,25 @@ namespace PortfolioTests.Controllers
         {
             _mockForumRepository = new Mock<IForumRepository>();
             _mapper = new Mock<IMapper>();
-            _controller = new ForumProfileController(_mockForumRepository.Object, _mapper.Object);
+            _mockForumService = new Mock<IForumProfileService>();
+            _forumController = new ForumProfileController(_mockForumService.Object);
         }
 
         [Test]
-        public void GetForumProfile_WithoutInterest_ReturnsOkIActionResult()
+        public void GetForumProfile_Returns_OkTaskIActionResult()
         {
             // Arrange
             var forumProfileId = 1;
-            var isInterestsListIncluded = false;
-            var forumProfile = new ForumProfile("mockDisplayName") { ForumProfileId = forumProfileId};
-            _mockForumRepository.Setup(service => service.GetForumProfileAsync(forumProfileId, isInterestsListIncluded)).ReturnsAsync(forumProfile);
+            var forumProfileDto = new ForumProfileDto();
+
+            _mockForumService.Setup(service => service.GetForumProfileAsync(forumProfileId)).ReturnsAsync(forumProfileDto);
             
             // Act
-            var result = _controller.GetAllForumProfiles();
+            var result = _forumController.GetForumProfile(forumProfileId);
 
             // Assert
+            Assert.IsNotNull(result);
             Assert.IsInstanceOf<Task<IActionResult>>(result);
-
         }
     }
 }

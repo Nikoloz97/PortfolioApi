@@ -1,7 +1,5 @@
 ﻿using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace PortfolioApi.Services
 {

@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using PortfolioApi.Models.Forum.ForumProfile;
-using PortfolioApi.DataAccess.Forum;
+﻿using Microsoft.AspNetCore.Mvc;
+using PortfolioApi.Services.Forum;
 
 namespace PortfolioApi.Controllers.Forum.ForumProfile
 {
@@ -9,43 +7,28 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
     [ApiController]
     public class ForumProfileController : Controller
     {
-        private readonly IForumRepository _forumRepository;
-        private readonly IMapper _mapper;
+        private readonly IForumProfileService _forumProfileService;
 
-        public ForumProfileController(IForumRepository forumRepository, IMapper mapper)
+        public ForumProfileController(IForumProfileService forumProfileService)
         {
-            _forumRepository = forumRepository ?? throw new ArgumentNullException(nameof(forumRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _forumProfileService = forumProfileService ?? throw new ArgumentNullException(nameof(forumProfileService));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllForumProfiles(bool areInterestsIncluded = true)
+        public async Task<IActionResult> GetAllForumProfiles()
         {
-            var forumProfileEntities = await _forumRepository.GetAllForumProfilesAsync(areInterestsIncluded);
+            var forumProfileDtoList = await _forumProfileService.GetAllForumProfilesAsync();
 
-            if (areInterestsIncluded)
-            {
-                return Ok(_mapper.Map<IEnumerable<ForumProfileDto>>(forumProfileEntities));
-            }
-            return Ok(_mapper.Map<IEnumerable<ForumProfileWithoutInterestsDto>>(forumProfileEntities));
+            return Ok(forumProfileDtoList);
         }
 
         [HttpGet("{forumProfileId}")]
-        public async Task<IActionResult> GetForumProfile(int forumProfileId, bool areInterestsIncluded = true)
+        public async Task<IActionResult> GetForumProfile(int forumProfileId)
         {
-            var profileCardEntity = await _forumRepository.GetForumProfileAsync(forumProfileId, areInterestsIncluded);
+            var forumProfileDto = await _forumProfileService.GetForumProfileAsync(forumProfileId);
+            
+            return Ok(forumProfileDto);
 
-            if (profileCardEntity == null)
-            {
-                return NotFound();
-            }
-
-            if (areInterestsIncluded)
-            {
-                return Ok(_mapper.Map<ForumProfileDto>(profileCardEntity));
-            }
-
-            return Ok(_mapper.Map<ForumProfileWithoutInterestsDto>(profileCardEntity));
         }
 
     }

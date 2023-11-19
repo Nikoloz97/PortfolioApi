@@ -4,8 +4,8 @@ using PortfolioApi.Services.User;
 
 namespace PortfolioApi.Controllers.User
 {
-    [ApiController]
     [Route("api/user")]
+    [ApiController]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

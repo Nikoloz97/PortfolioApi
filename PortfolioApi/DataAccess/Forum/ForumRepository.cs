@@ -17,10 +17,8 @@ namespace PortfolioApi.DataAccess.Forum
 
         // Forum profile
 
-        public async Task<IEnumerable<ForumProfile>> GetAllForumProfilesAsync(bool areInterestsIncluded)
+        public async Task<IEnumerable<ForumProfile>> GetAllForumProfilesAsync()
         {
-            if (areInterestsIncluded)
-            {
                 return await _forumContext.ForumProfiles
                                         .Include(p => p.Interests)
                                         .Include(p => p.Posts)
@@ -29,29 +27,13 @@ namespace PortfolioApi.DataAccess.Forum
                                         .Include(p => p.Followings)
                                         .OrderBy(p => p.ForumProfileId)
                                         .ToListAsync();
-            }
-            return await _forumContext.ForumProfiles
-                                        .Include(p => p.Posts)
-                                        .ThenInclude(p => p.Comments)
-                                        .Include(p => p.Followers)
-                                        .Include(p => p.Followings)
-                                        .OrderBy(p => p.ForumProfileId)
-                                        .ToListAsync();
         }
 
-        public async Task<ForumProfile?> GetForumProfileAsync(int forumProfileId, bool isInterestsListIncluded)
+        public async Task<ForumProfile?> GetForumProfileAsync(int forumProfileId)
         {
-            if (isInterestsListIncluded)
-            {
+
                 return await _forumContext.ForumProfiles
                                             .Include(p => p.Interests)
-                                            .Include(p => p.Followers)
-                                            .Include(p => p.Followings)
-                                            .Include(p => p.Posts)
-                                            .Where(p => p.ForumProfileId == forumProfileId)
-                                            .FirstOrDefaultAsync();
-            }
-            return await _forumContext.ForumProfiles
                                             .Include(p => p.Followers)
                                             .Include(p => p.Followings)
                                             .Include(p => p.Posts)
