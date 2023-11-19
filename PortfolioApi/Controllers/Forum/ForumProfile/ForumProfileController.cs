@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PortfolioApi.Models.Forum.ForumProfile;
 using PortfolioApi.Services.Forum;
 
 namespace PortfolioApi.Controllers.Forum.ForumProfile
@@ -13,6 +14,9 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
         {
             _forumProfileService = forumProfileService ?? throw new ArgumentNullException(nameof(forumProfileService));
         }
+
+        // ForumProfile
+        // Get 
 
         [HttpGet]
         public async Task<IActionResult> GetAllForumProfiles()
@@ -30,6 +34,39 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
             return Ok(forumProfileDto);
 
         }
+
+        // Interest 
+        // Get 
+        [HttpGet("Interest/{forumProfileId}")]
+        public async Task<ActionResult<IEnumerable<InterestDto>>> GetAllInterests(int forumProfileId)
+        {
+            if (!await _forumProfileService.ForumProfileExistsAsync(forumProfileId))
+            {
+                return NotFound();
+            }
+
+            var interestEntities = await _forumProfileService.GetAllInterestsForForumProfileAsync(forumProfileId);
+
+            return Ok(_mapper.Map<IEnumerable<InterestDto>>(interestEntities));
+        }
+
+        [HttpGet("Interest/{forumProfileId}/{interestId}")]
+        public async Task<ActionResult<InterestDto>> GetInterest(int forumProfileId, int interestId)
+        {
+            if (!await _forumRepository.ForumProfileExistsAsync(forumProfileId))
+            {
+                return NotFound();
+            }
+            var interestEntity = await _forumRepository.GetInterestForForumProfileAsync(forumProfileId, interestId);
+
+            if (interestEntity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<InterestDto>(interestEntity));
+        }
+
 
     }
 }

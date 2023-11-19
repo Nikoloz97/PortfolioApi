@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using PortfolioApi.DataAccess.Forum;
-using PortfolioApi.Entities.Forum;
 using PortfolioApi.Models.Forum.ForumProfile;
+using PortfolioApi.Models.Forum.Post;
 
 namespace PortfolioApi.Services.Forum
 {
-    public class ForumProfileService
+    public class ForumProfileService : IForumProfileService
     {
         private readonly IForumRepository _forumRepository;
         private readonly IMapper _mapper;
@@ -16,6 +16,9 @@ namespace PortfolioApi.Services.Forum
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
         }
+
+        // Forum Profile
+
         public async Task<IEnumerable<ForumProfileDto>> GetAllForumProfilesAsync()
         {
             var forumProfileEntities = await _forumRepository.GetAllForumProfilesAsync();
@@ -27,6 +30,31 @@ namespace PortfolioApi.Services.Forum
             var forumProfileEntity = await _forumRepository.GetForumProfileAsync(forumProfileId);
 
             return _mapper.Map<ForumProfileDto>(forumProfileEntity);
+        }
+
+        // Interest
+
+        public async Task<IEnumerable<InterestDto>> GetAllInterestsForForumProfileAsync(int forumProfileId)
+        {
+            var interestEntities = await _forumRepository.GetForumProfileAsync(forumProfileId);
+
+            return _mapper.Map<IEnumerable<InterestDto>>(interestEntities);
+        }
+
+        // Post
+
+        public async Task<IEnumerable<PostDto>> GetAllPostsForForumProfileAsync(int forumProfileId)
+        {
+            var postEntities = await _forumRepository.GetAllInterestsForForumProfileAsync(forumProfileId);
+
+            return _mapper.Map<IEnumerable<PostDto>>(postEntities);
+        }
+
+        public async Task<PostDto?> GetPostForForumProfileAsync(int forumProfileId, int postId)
+        {
+            var postEntity = await _forumRepository.GetInterestForForumProfileAsync(forumProfileId, postId);
+
+            return _mapper.Map<PostDto?>(postEntity);
         }
 
     }

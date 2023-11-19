@@ -8,6 +8,7 @@ using PortfolioApi.Services;
 
 namespace PortfolioApi.Controllers.Forum.Post
 {
+    // Comment stuff = part of post 
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
