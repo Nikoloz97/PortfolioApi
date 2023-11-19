@@ -38,33 +38,33 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
         // Interest 
         // Get 
         [HttpGet("Interest/{forumProfileId}")]
-        public async Task<ActionResult<IEnumerable<InterestDto>>> GetAllInterests(int forumProfileId)
+        public async Task<ActionResult<IEnumerable<InterestDto>>> GetAllInterestsForForumProfile(int forumProfileId)
         {
             if (!await _forumProfileService.ForumProfileExistsAsync(forumProfileId))
             {
                 return NotFound();
             }
 
-            var interestEntities = await _forumProfileService.GetAllInterestsForForumProfileAsync(forumProfileId);
+            var interestDtos = await _forumProfileService.GetAllInterestsForForumProfileAsync(forumProfileId);
 
-            return Ok(_mapper.Map<IEnumerable<InterestDto>>(interestEntities));
+            return Ok(interestDtos);
         }
 
         [HttpGet("Interest/{forumProfileId}/{interestId}")]
-        public async Task<ActionResult<InterestDto>> GetInterest(int forumProfileId, int interestId)
+        public async Task<ActionResult<InterestDto>> GetInterestForForumProfile(int forumProfileId, int interestId)
         {
-            if (!await _forumRepository.ForumProfileExistsAsync(forumProfileId))
+            if (!await _forumProfileService.ForumProfileExistsAsync(forumProfileId))
             {
                 return NotFound();
             }
-            var interestEntity = await _forumRepository.GetInterestForForumProfileAsync(forumProfileId, interestId);
+            var interestDto = await _forumProfileService.GetInterestForForumProfileAsync(forumProfileId, interestId);
 
-            if (interestEntity == null)
+            if (interestDto == null)
             {
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<InterestDto>(interestEntity));
+            return Ok(interestDto);
         }
 
 

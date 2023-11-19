@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.DataAccess.GeoGame;
 using PortfolioApi.Models.GeoGame;
+using PortfolioApi.Services.GeoGame;
 
 namespace PortfolioApi.Controllers.GeoGame
 {
@@ -9,20 +10,18 @@ namespace PortfolioApi.Controllers.GeoGame
     [Route("api/geoGame")]
     public class GeoGameController : Controller
     {
-        private readonly IGeoGameRepository _geoGameRepository;
-        private readonly IMapper _mapper;
-        public GeoGameController(IGeoGameRepository geoGameRepository, IMapper mapper)
+        private readonly IGeoGameService _geoGameService;
+        public GeoGameController(IGeoGameService geoGameService)
         {
-            _geoGameRepository = geoGameRepository ?? throw new ArgumentNullException(nameof(geoGameRepository));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _geoGameService = geoGameService ?? throw new ArgumentNullException(nameof(geoGameService));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCards()
         {
-            var geoGameEntities = await _geoGameRepository.GetAllGeoCardsAsync();
+            var geoGameDtos = await _geoGameService.GetAllGeoCardsAsync();
 
-            return Ok(_mapper.Map<IEnumerable<GeoCardDto>>(geoGameEntities));
+            return Ok();
         }
     }
 }

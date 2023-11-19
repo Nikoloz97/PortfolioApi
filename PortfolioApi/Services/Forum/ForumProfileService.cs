@@ -32,13 +32,25 @@ namespace PortfolioApi.Services.Forum
             return _mapper.Map<ForumProfileDto>(forumProfileEntity);
         }
 
+        public async Task<bool> ForumProfileExistsAsync(int forumProfileId)
+        {
+            return await _forumRepository.ForumProfileExistsAsync(forumProfileId);
+        }
+
         // Interest
 
         public async Task<IEnumerable<InterestDto>> GetAllInterestsForForumProfileAsync(int forumProfileId)
         {
-            var interestEntities = await _forumRepository.GetForumProfileAsync(forumProfileId);
+            var interestEntities = await _forumRepository.GetAllInterestsForForumProfileAsync(forumProfileId);
 
             return _mapper.Map<IEnumerable<InterestDto>>(interestEntities);
+        }
+
+        public async Task<InterestDto> GetInterestForForumProfileAsync(int forumProfileId, int interestId)
+        {
+            var interestEntity = await _forumRepository.GetInterestForForumProfileAsync(forumProfileId, interestId);
+
+            return _mapper.Map<InterestDto>(interestEntity);
         }
 
         // Post
