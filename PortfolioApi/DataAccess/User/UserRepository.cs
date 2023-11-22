@@ -21,10 +21,10 @@ namespace PortfolioApi.DataAccess.User
                                     .ToListAsync();
         }
 
-        public async Task<Entities.User.User?> GetUserAsync(string username, string password)
+        public async Task<Entities.User.User?> GetUserAsync(string username)
         {
            var potentialUser = await _userContext.Users
-                                            .Where(x => x.Username == username && x.Password == password)
+                                            .Where(x => x.Username == username)
                                             .FirstOrDefaultAsync();
             return potentialUser;
         }

@@ -1,23 +1,25 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using PortfolioApi.DataAccess.User;
 using PortfolioApi.Exceptions;
 using PortfolioApi.Models.User;
+using PortfolioApi.Services.Authentication;
 
 namespace PortfolioApi.Services.User
 {
     public class UserService : IUserService
     {
         private readonly AzureStorageService _storageService;
-/*        private readonly IAuthService _authService;
-*/        private readonly IUserRepository _userRepository;
+        private readonly IAuthService _authService;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public UserService(IMapper mapper, IUserRepository userRepository
-/*            IAuthService authService
-*/            )
+        public UserService(IMapper mapper, IUserRepository userRepository,
+            IAuthService authService
+            )
         {
-/*            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-*/
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
@@ -27,6 +29,7 @@ namespace PortfolioApi.Services.User
             _storageService = new AzureStorageService(storageConnectionString, containerName);
         }
 
+        // User
         // Get
 
         public async Task<IEnumerable<UserDto_Return>> GetAllUsersAsync()
@@ -40,27 +43,19 @@ namespace PortfolioApi.Services.User
 
         public async Task<UserDto_Return> GetUserAsync(string username, string password)
         {
-            bool doesUsernameExist = await DoesUsernameExistAsync(username);
+            var potentialUserEntity = await _userRepository.GetUserAsync(username) ?? throw new UsernameNotFoundException();
 
-            if (!doesUsernameExist)
+            if (VerifyPassword(password, potentialUserEntity.Password))
             {
-                throw new UsernameNotFoundException();
+                var userDto = _mapper.Map<UserDto_Return>(potentialUserEntity);
+
+                userDto.Token = await _authService.GenerateJwtToken(userDto);
+
+                return userDto;
             }
             else
             {
-                var potentialUserEntity = await _userRepository.GetUserAsync(username, password);
-
-                if (potentialUserEntity == null)
-                {
-                    throw new PasswordNotFoundException();
-                }
-
-
-                else {
-                    var UserDto = _mapper.Map<UserDto_Return>(potentialUserEntity);
-
-                    return UserDto;
-                }
+                throw new PasswordNotFoundException();
             }
         }
 
@@ -78,7 +73,7 @@ namespace PortfolioApi.Services.User
             }
 
             // Manually map (due to ProfileURL)
-            var newUserEntityToCreate = new Entities.User.User(newUser.Username, newUser.Password, newUser.Email)
+            var newUserEntityToCreate = new Entities.User.User(newUser.Username, HashPassword(newUser.Password), newUser.Email)
             {
                 FirstName = newUser.FirstName,
                 LastName = newUser.LastName,
@@ -90,10 +85,28 @@ namespace PortfolioApi.Services.User
 
             var newUserDto = _mapper.Map<UserDto_Return>(newUserEntity);
 
+            var token = await _authService.GenerateJwtToken(newUserDto);
+
+            newUserDto.Token = token;
+
             return newUserDto;
         }
 
         // Helpers
+
+        private string HashPassword(string password)
+        {
+            var passwordHasher = new PasswordHasher<UserDto_Creation>(); 
+            return passwordHasher.HashPassword(null, password);
+        }
+
+        private bool VerifyPassword(string providedPassword, string hashedPassword)
+        {
+            var passwordHasher = new PasswordHasher<UserDto_Creation>();
+            var result = passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
+
+            return result == PasswordVerificationResult.Success;
+        }
 
         public async Task<bool> DoesUsernameExistAsync(string username)
         {

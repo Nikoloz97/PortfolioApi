@@ -13,22 +13,6 @@ namespace PortfolioApi.Services.Authentication
         // Replace this with your actual secret key
         private const string JwtSecretKey = "your_secret_key";
 
-        private readonly IUserRepository _userRepository;
-        private readonly IUserService _userService;
-
-        public AuthService(IUserRepository userRepository, IUserService userService)
-        {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-        }
-
-        public async Task<UserDto_Return> GetUserAsync(string username, string password)
-        {
-            // Implement user login logic
-            // Verify the username and password
-            // Return the authenticated user
-            throw new NotImplementedException();
-        }
         public async Task<string> GenerateJwtToken(UserDto_Return user)
         {
             // Generate JWT token with user claims
