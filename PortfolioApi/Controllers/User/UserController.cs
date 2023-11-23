@@ -25,15 +25,15 @@ namespace PortfolioApi.Controllers.User
             return Ok(userDtos);
         }
 
-        [HttpGet("{username}/{password}", Name = "GetUser")]
-        public async Task<IActionResult> GetUser(string username, string password)
+        // Post
+
+        [HttpPost("login", Name = "GetUser")]
+        public async Task<IActionResult> GetUser([FromBody] LoginRequestDto loginRequest)
         {
-            var userDto = await _userService.GetUserAsync(username, password);
+            var userDto = await _userService.GetUserAsync(loginRequest);
 
             return Ok(userDto);
         }
-
-        // Post
 
         [HttpPost]
         public async Task<ActionResult<UserDto_Return>> CreateUser([FromForm] UserDto_Creation newUser)

@@ -41,11 +41,13 @@ namespace PortfolioApi.Services.User
             return UserDtos;
         }
 
-        public async Task<UserDto_Return> GetUserAsync(string username, string password)
-        {
-            var potentialUserEntity = await _userRepository.GetUserAsync(username) ?? throw new UsernameNotFoundException();
+        // Post
 
-            if (VerifyPassword(password, potentialUserEntity.Password))
+        public async Task<UserDto_Return> GetUserAsync(LoginRequestDto loginRequest)
+        {
+            var potentialUserEntity = await _userRepository.GetUserAsync(loginRequest.Username) ?? throw new UsernameNotFoundException();
+
+            if (VerifyPassword(loginRequest.Password, potentialUserEntity.Password))
             {
                 var userDto = _mapper.Map<UserDto_Return>(potentialUserEntity);
 
@@ -58,9 +60,6 @@ namespace PortfolioApi.Services.User
                 throw new PasswordNotFoundException();
             }
         }
-
-
-        // Post
 
         public async Task<UserDto_Return> CreateUserAsync(UserDto_Creation newUser)
         {
