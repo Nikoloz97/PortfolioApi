@@ -85,10 +85,6 @@ namespace PortfolioApi.Services.User
 
             var newUserDto = _mapper.Map<UserDto_Return>(newUserEntity);
 
-            var token = await _authService.GenerateJwtToken(newUserDto);
-
-            newUserDto.Token = token;
-
             return newUserDto;
         }
 

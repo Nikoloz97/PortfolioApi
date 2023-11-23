@@ -1,7 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using PortfolioApi.DataAccess.User;
 using PortfolioApi.Models.User;
-using PortfolioApi.Services.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -10,8 +8,14 @@ namespace PortfolioApi.Services.Authentication
 {
     public class AuthService : IAuthService
     {
-        // Replace this with your actual secret key
-        private const string JwtSecretKey = "your_secret_key";
+        private readonly IConfiguration _configuration;
+
+        public AuthService(IConfiguration configuration)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));   
+        }
+
+        private string JwtSecretKey => _configuration["JwtSecretKey"];
 
         public async Task<string> GenerateJwtToken(UserDto_Return user)
         {
@@ -24,9 +28,9 @@ namespace PortfolioApi.Services.Authentication
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                 new Claim(ClaimTypes.Name, user.Username),
-                    // You can add more claims as needed
                 }),
-                Expires = DateTime.UtcNow.AddHours(1), // Token expiration time
+                // Token expiration time
+                Expires = DateTime.UtcNow.AddHours(1), 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
