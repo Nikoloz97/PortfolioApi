@@ -10,10 +10,11 @@ using PortfolioApi.DataAccess.GeoGame;
 using PortfolioApi.Services.User;
 using PortfolioApi.Services.Email;
 using PortfolioApi.Services.Authentication;
+using PortfolioApi.Services.Forum;
+using PortfolioApi.Services.GeoGame;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -32,17 +33,29 @@ builder.Services.AddDbContext<UserContext>(
 builder.Services.AddDbContext<GeoGameContext>(
     dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:GeoGameDBConnectionString"]));
 
+
+/* Repositories */
+
 builder.Services.AddScoped<IForumRepository, ForumRepository>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IGeoGameRepository, GeoGameRepository>();
 
+
+/* Services */
+
+builder.Services.AddScoped<IForumProfileService, ForumProfileService>();
+
+builder.Services.AddScoped<IGeoGameService, GeoGameService>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
