@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PortfolioApi.DataAccess.GeoGame;
 using PortfolioApi.DbContexts;
 using PortfolioApi.Entities.GeoGame;
 
-namespace PortfolioApi.DataAccess.Forum
+namespace PortfolioApi.DataAccess.GeoGame
 {
     public class GeoGameRepository : IGeoGameRepository
     {

@@ -9,7 +9,7 @@ namespace PortfolioApi.Services.GeoGame
     {
         private readonly IGeoGameRepository _geoGameRepository;
         private readonly IMapper _mapper;
-        public GeoGameService(GeoGameRepository geoGameRepository, IMapper mapper)
+        public GeoGameService(IGeoGameRepository geoGameRepository, IMapper mapper)
         {
             _geoGameRepository = geoGameRepository ?? throw new ArgumentException(nameof(geoGameRepository));
             _mapper = mapper ?? throw new ArgumentException(nameof(mapper));

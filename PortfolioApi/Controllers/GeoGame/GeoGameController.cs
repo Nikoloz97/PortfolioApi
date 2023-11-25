@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using PortfolioApi.DataAccess.GeoGame;
-using PortfolioApi.Models.GeoGame;
+﻿using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.Services.GeoGame;
 
 namespace PortfolioApi.Controllers.GeoGame
