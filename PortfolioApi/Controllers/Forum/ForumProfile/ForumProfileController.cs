@@ -26,13 +26,21 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
             return Ok(forumProfileDtoList);
         }
 
+        [HttpGet("{userProfile/user/}")]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            var forumProfileDtoList = await _forumProfileService.GetAllForumProfilesAsync();
+
+            return Ok(forumProfileDtoList);
+        }
+
+
         [HttpGet("{forumProfileId}")]
         public async Task<IActionResult> GetForumProfile(int forumProfileId)
         {
             var forumProfileDto = await _forumProfileService.GetForumProfileAsync(forumProfileId);
             
             return Ok(forumProfileDto);
-
         }
 
         // Interest 

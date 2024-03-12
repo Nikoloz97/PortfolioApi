@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PortfolioApi.DbContexts;
 
@@ -10,9 +11,11 @@ using PortfolioApi.DbContexts;
 namespace PortfolioApi.Migrations.User
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20240312034424_MovedForumContextContent_ToUserContext")]
+    partial class MovedForumContextContent_ToUserContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -403,106 +406,6 @@ namespace PortfolioApi.Migrations.User
                             PostedDate = new DateTime(2023, 7, 11, 20, 38, 15, 0, DateTimeKind.Unspecified),
                             Text = "I didn't keep track, but the best ones are somewhere in Paris.",
                             Title = "Which Croissants are Best?"
-                        });
-                });
-
-            modelBuilder.Entity("PortfolioApi.Entities.GeoGame.GeoCard", b =>
-                {
-                    b.Property<int>("GeoCardId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CountryName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("OptionFour")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("OptionOne")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("OptionThree")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("OptionTwo")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Prompt")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("QuestionType")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Region")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("GeoCardId");
-
-                    b.ToTable("GeoCards");
-
-                    b.HasData(
-                        new
-                        {
-                            GeoCardId = 1,
-                            Answer = "Tbilisi",
-                            CountryName = "Georgia",
-                            ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Georgia_%28orthographic_projection_with_inset%29.svg/250px-Georgia_%28orthographic_projection_with_inset%29.svg.png",
-                            OptionFour = "Berlin",
-                            OptionOne = "Tbilisi",
-                            OptionThree = "Paris",
-                            OptionTwo = "Yerevan",
-                            Prompt = "What is the capital of Georgia?",
-                            QuestionType = "Multiple Choice",
-                            Region = "Eastern Europe"
-                        },
-                        new
-                        {
-                            GeoCardId = 2,
-                            Answer = "Argentina",
-                            CountryName = "Argentina",
-                            ImageUrl = "https://www.freeworldmaps.net/southamerica/southamerica-blackandwhite-hd.jpg",
-                            OptionFour = "Argentina",
-                            OptionOne = "Peru",
-                            OptionThree = "Uruguay",
-                            OptionTwo = "Brazil",
-                            Prompt = "Which of the following options is on the southern-most tip of South America?",
-                            QuestionType = "Multiple Choice",
-                            Region = "South America"
-                        },
-                        new
-                        {
-                            GeoCardId = 3,
-                            Answer = "Thailand",
-                            CountryName = "Thailand",
-                            ImageUrl = "https://www.seabourn.com/content/dam/sbn65/inventory-assets/ports/o/bkk/port-laem-chabang-bangkok-1334x1001.jpg",
-                            OptionFour = "China",
-                            OptionOne = "Myanmar",
-                            OptionThree = "Turkey",
-                            OptionTwo = "Thailand",
-                            Prompt = "Which country is Bangkok located in?",
-                            QuestionType = "Free Response",
-                            Region = "Asia"
                         });
                 });
 

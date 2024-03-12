@@ -7,11 +7,11 @@ namespace PortfolioApi.DataAccess.Forum
     // All of business logic = repository 
     public class ForumRepository : IForumRepository
     {
-        private readonly ForumContext _forumContext;
+        private readonly UserContext _userContext;
 
-        public ForumRepository(ForumContext forumContext)
+        public ForumRepository(UserContext userContext)
         {
-            _forumContext = forumContext ?? throw new ArgumentNullException(nameof(forumContext));
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
 
@@ -19,7 +19,7 @@ namespace PortfolioApi.DataAccess.Forum
 
         public async Task<IEnumerable<ForumProfile>> GetAllForumProfilesAsync()
         {
-                return await _forumContext.ForumProfiles
+                return await _userContext.ForumProfiles
                                         .Include(p => p.Interests)
                                         .Include(p => p.Posts)
                                         .ThenInclude(post => post.Comments)
@@ -32,7 +32,7 @@ namespace PortfolioApi.DataAccess.Forum
         public async Task<ForumProfile?> GetForumProfileAsync(int forumProfileId)
         {
 
-                return await _forumContext.ForumProfiles
+                return await _userContext.ForumProfiles
                                             .Include(p => p.Interests)
                                             .Include(p => p.Followers)
                                             .Include(p => p.Followings)
@@ -43,7 +43,7 @@ namespace PortfolioApi.DataAccess.Forum
 
         public async Task<bool> ForumProfileExistsAsync(int forumProfileId)
         {
-            return await _forumContext.ForumProfiles.AnyAsync(pc => pc.ForumProfileId == forumProfileId);
+            return await _userContext.ForumProfiles.AnyAsync(pc => pc.ForumProfileId == forumProfileId);
         }
 
 
@@ -51,25 +51,25 @@ namespace PortfolioApi.DataAccess.Forum
 
         public async Task<IEnumerable<Interest>> GetAllInterestsForForumProfileAsync(int forumProfileId)
         {
-            return await _forumContext.Interests.Where(i => i.ForumProfileId == forumProfileId).ToListAsync();
+            return await _userContext.Interests.Where(i => i.ForumProfileId == forumProfileId).ToListAsync();
 
         }
 
         public async Task<Interest?> GetInterestForForumProfileAsync(int forumProfileId, int interestId)
         {
-            return await _forumContext.Interests.Where(i => i.ForumProfileId == forumProfileId && i.InterestId == interestId).FirstOrDefaultAsync();
+            return await _userContext.Interests.Where(i => i.ForumProfileId == forumProfileId && i.InterestId == interestId).FirstOrDefaultAsync();
         }
 
         // Post
 
         public async Task<IEnumerable<Post>> GetAllPostsForForumProfileAsync(int forumProfileId)
         {
-            return await _forumContext.Posts.Where(p => p.ForumProfileId == forumProfileId).ToListAsync();
+            return await _userContext.Posts.Where(p => p.ForumProfileId == forumProfileId).ToListAsync();
         }
 
         public async Task<Post?> GetPostForForumProfileAsync(int forumProfileId, int postId)
         {
-            return await _forumContext.Posts.Where(p => p.ForumProfileId == forumProfileId && p.PostId == postId).FirstOrDefaultAsync();
+            return await _userContext.Posts.Where(p => p.ForumProfileId == forumProfileId && p.PostId == postId).FirstOrDefaultAsync();
         }
 
 
