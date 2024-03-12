@@ -6,16 +6,16 @@ namespace PortfolioApi.DataAccess.GeoGame
 {
     public class GeoGameRepository : IGeoGameRepository
     {
-        private readonly GeoGameContext _geoGameContext;
+        private readonly UserContext _userContext;
 
-        public GeoGameRepository(GeoGameContext geoGameContext)
+        public GeoGameRepository(UserContext userContext)
         {
-            _geoGameContext = geoGameContext ?? throw new ArgumentNullException(nameof(geoGameContext));
+            _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
         public async Task<IEnumerable<GeoCard>> GetAllGeoCardsAsync()
         {
-            return await _geoGameContext.GeoCards
+            return await _userContext.GeoCards
                                         .OrderBy(gc => gc.GeoCardId)
                                         .ToListAsync();
         }
