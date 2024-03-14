@@ -6,6 +6,8 @@ namespace PortfolioApi.Models.Forum.ForumProfile
     public class ForumProfileDto
     {
         public int ForumProfileId { get; set; }
+        public int UserId { get; set; }
+
         public string DisplayName { get; set; } = string.Empty;
 
         public int? Age { get; set; }

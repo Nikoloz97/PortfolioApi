@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using PortfolioApi.Entities.User;
 
 namespace PortfolioApi.Entities.Forum
 {
@@ -10,6 +11,10 @@ namespace PortfolioApi.Entities.Forum
         // Automatically generates new ID when new profile is added
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ForumProfileId { get; set; }
+
+        [ForeignKey("UserId")]
+        public User.User? User { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [MaxLength(50)]
