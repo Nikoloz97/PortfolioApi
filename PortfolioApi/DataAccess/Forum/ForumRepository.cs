@@ -14,7 +14,6 @@ namespace PortfolioApi.DataAccess.Forum
             _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
         }
 
-
         // Forum profile
 
         public async Task<IEnumerable<ForumProfile>> GetAllForumProfilesAsync()
@@ -29,9 +28,45 @@ namespace PortfolioApi.DataAccess.Forum
                                         .ToListAsync();
         }
 
+        public async Task<IEnumerable<ForumProfile>> GetForumProfilesWithPostsAsync()
+        {
+            return await _userContext.ForumProfiles
+                                    .Where(p => p.Posts.Count > 0)
+                                    .Include(p => p.Interests)
+                                    .Include(p => p.Posts)
+                                    .ThenInclude(post => post.Comments)
+                                    .Include(p => p.Followers)
+                                    .Include(p => p.Followings)
+                                    .OrderBy(p => p.ForumProfileId)
+                                    .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ForumProfile>> GetForumProfilesWithPostsExceptUserAsync(int userId)
+        {
+            return await _userContext.ForumProfiles
+                                    .Where(p => p.Posts.Count > 0 && p.UserId != userId)
+                                    .Include(p => p.Interests)
+                                    .Include(p => p.Posts)
+                                    .ThenInclude(post => post.Comments)
+                                    .Include(p => p.Followers)
+                                    .Include(p => p.Followings)
+                                    .OrderBy(p => p.ForumProfileId)
+                                    .ToListAsync();
+        }
+
+        public async Task<ForumProfile?> GetUserForumProfileAsync(int userId)
+        {
+            return await _userContext.ForumProfiles
+                                        .Include(p => p.Interests)
+                                        .Include(p => p.Followers)
+                                        .Include(p => p.Followings)
+                                        .Include(p => p.Posts)
+                                        .Where(p => p.UserId == userId)
+                                        .FirstOrDefaultAsync();
+        }
+
         public async Task<ForumProfile?> GetForumProfileAsync(int forumProfileId)
         {
-
                 return await _userContext.ForumProfiles
                                             .Include(p => p.Interests)
                                             .Include(p => p.Followers)
@@ -44,6 +79,13 @@ namespace PortfolioApi.DataAccess.Forum
         public async Task<bool> ForumProfileExistsAsync(int forumProfileId)
         {
             return await _userContext.ForumProfiles.AnyAsync(pc => pc.ForumProfileId == forumProfileId);
+        }
+
+        public async Task<Entities.Forum.ForumProfile?> CreateForumProfileAsync(Entities.Forum.ForumProfile newForumProfileEntity, int userId)
+        {
+            _userContext.ForumProfiles.Add(newForumProfileEntity);
+            await _userContext.SaveChangesAsync();
+            return await _userContext.ForumProfiles.Where(fp => fp.UserId == userId).FirstOrDefaultAsync();   
         }
 
 

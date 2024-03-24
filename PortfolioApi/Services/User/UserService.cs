@@ -4,6 +4,7 @@ using PortfolioApi.DataAccess.User;
 using PortfolioApi.Exceptions;
 using PortfolioApi.Models.User;
 using PortfolioApi.Services.Authentication;
+using PortfolioApi.Services.Forum;
 
 namespace PortfolioApi.Services.User
 {
@@ -11,15 +12,16 @@ namespace PortfolioApi.Services.User
     {
         private readonly AzureStorageService _storageService;
         private readonly IAuthService _authService;
+        private readonly IForumProfileService _forumProfileService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public UserService(IMapper mapper, IUserRepository userRepository,
-            IAuthService authService
+            IAuthService authService, IForumProfileService forumProfileService
             )
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-
+            _forumProfileService = forumProfileService ?? throw new ArgumentNullException(nameof(authService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 
@@ -81,6 +83,8 @@ namespace PortfolioApi.Services.User
             };
 
             var newUserEntity = await _userRepository.CreateUserAsync(newUserEntityToCreate);
+
+            await _forumProfileService.CreateForumProfileAsync(newUserEntity.UserId, newUserEntity.Username, newUserEntity.ProfileURL);
 
             var newUserDto = _mapper.Map<UserDto_Return>(newUserEntity);
 

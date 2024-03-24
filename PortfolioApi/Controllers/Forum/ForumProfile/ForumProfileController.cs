@@ -21,21 +21,36 @@ namespace PortfolioApi.Controllers.Forum.ForumProfile
         [HttpGet]
         public async Task<IActionResult> GetAllForumProfiles()
         {
-            var forumProfileDtoList = await _forumProfileService.GetAllForumProfilesAsync();
+            var forumProfileDtos = await _forumProfileService.GetAllForumProfilesAsync();
 
-            return Ok(forumProfileDtoList);
+            return Ok(forumProfileDtos);
         }
 
-        [HttpGet("{userProfile/user/}")]
-        public async Task<IActionResult> GetUserProfile()
+        [HttpGet("ForumProfilesWithPosts")]
+        public async Task<IActionResult> GetForumProfilesWithPosts()
         {
-            var forumProfileDtoList = await _forumProfileService.GetAllForumProfilesAsync();
+            var forumProfileDtos = await _forumProfileService.GetForumProfilesWithPostsAsync();
 
-            return Ok(forumProfileDtoList);
+            return Ok(forumProfileDtos);
         }
 
+        [HttpGet("ForumProfilesWithPosts/{userId}")]
+        public async Task<IActionResult> GetForumProfilesWithPostsExceptUser(int userId)
+        {
+            var forumProfileDtos = await _forumProfileService.GetForumProfilesWithPostsExceptUserAsync(userId);
 
-        [HttpGet("{forumProfileId}")]
+            return Ok(forumProfileDtos);
+        }
+
+        [HttpGet("UserProfile/{userId}")]
+        public async Task<IActionResult> GetUserForumProfile(int userId)
+        {
+            var userForumProfileDto = await _forumProfileService.GetUserForumProfileAsync(userId);
+
+            return Ok(userForumProfileDto);
+        }
+
+        [HttpGet("ForumProfile/{forumProfileId}")]
         public async Task<IActionResult> GetForumProfile(int forumProfileId)
         {
             var forumProfileDto = await _forumProfileService.GetForumProfileAsync(forumProfileId);

@@ -33,9 +33,10 @@ namespace PortfolioApi.Entities.Forum
 
         public ICollection<Following> Followings { get; set; } = new List<Following>();
 
-        public ForumProfile(string displayName)
+        public ForumProfile(int userId, string displayName)
         {
             DisplayName = displayName;
+            UserId = userId;
         }
     }
 }

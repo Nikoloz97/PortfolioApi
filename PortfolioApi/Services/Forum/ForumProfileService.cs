@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.DataAccess.Forum;
+using PortfolioApi.DbContexts;
+using PortfolioApi.Entities.Forum;
 using PortfolioApi.Models.Forum.ForumProfile;
 using PortfolioApi.Models.Forum.Post;
 
@@ -25,6 +28,25 @@ namespace PortfolioApi.Services.Forum
             return _mapper.Map<IEnumerable<ForumProfileDto>>(forumProfileEntities);
         }
 
+        public async Task<IEnumerable<ForumProfileDto>> GetForumProfilesWithPostsAsync()
+        {
+            var forumProfileEntities = await _forumRepository.GetForumProfilesWithPostsAsync();
+            return _mapper.Map<IEnumerable<ForumProfileDto>>(forumProfileEntities);
+        }
+
+        public async Task<IEnumerable<ForumProfileDto>> GetForumProfilesWithPostsExceptUserAsync(int userId)
+        {
+            var forumProfileEntities = await _forumRepository.GetForumProfilesWithPostsExceptUserAsync(userId);
+            return _mapper.Map<IEnumerable<ForumProfileDto>>(forumProfileEntities);
+        }
+
+        public async Task<ForumProfileDto> GetUserForumProfileAsync(int userId)
+        {
+            var forumProfileEntity = await _forumRepository.GetUserForumProfileAsync(userId);
+
+            return _mapper.Map<ForumProfileDto>(forumProfileEntity);
+        }
+
         public async Task<ForumProfileDto> GetForumProfileAsync(int forumProfileId)
         {
             var forumProfileEntity = await _forumRepository.GetForumProfileAsync(forumProfileId);
@@ -35,6 +57,20 @@ namespace PortfolioApi.Services.Forum
         public async Task<bool> ForumProfileExistsAsync(int forumProfileId)
         {
             return await _forumRepository.ForumProfileExistsAsync(forumProfileId);
+        }
+
+        public async Task<IActionResult> CreateForumProfileAsync(int userId, string username, string? profileURL)
+        {
+            var newFPToCreateEntity = new ForumProfile(userId, username)
+            {
+                ProfileURL = profileURL
+            };
+
+            var newlyCreatedFPEntity = await _forumRepository.CreateForumProfileAsync(newFPToCreateEntity, userId);
+
+            var newFPDto = _mapper.Map<ForumProfileDto>(newlyCreatedFPEntity);
+
+            return new OkObjectResult(newFPDto);
         }
 
         // Interest

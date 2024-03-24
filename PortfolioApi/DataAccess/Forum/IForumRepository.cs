@@ -6,6 +6,12 @@ namespace PortfolioApi.DataAccess.Forum
     {
         Task<IEnumerable<ForumProfile>> GetAllForumProfilesAsync();
 
+        Task<IEnumerable<ForumProfile>> GetForumProfilesWithPostsAsync();
+
+        Task<IEnumerable<ForumProfile>> GetForumProfilesWithPostsExceptUserAsync(int userId);
+
+        Task<ForumProfile?> GetUserForumProfileAsync(int forumProfileId);
+
         Task<ForumProfile?> GetForumProfileAsync(int profileCardId);
 
         Task<IEnumerable<Interest>> GetAllInterestsForForumProfileAsync(int profileCardId);
@@ -18,6 +24,7 @@ namespace PortfolioApi.DataAccess.Forum
 
         Task<Post?> GetPostForForumProfileAsync(int forumProfileId, int postId);
 
+        Task<Entities.Forum.ForumProfile?> CreateForumProfileAsync(Entities.Forum.ForumProfile newForumProfileEntity, int userId);
 
     }
 }
