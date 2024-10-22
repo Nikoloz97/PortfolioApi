@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PortfolioApi.DataAccess.Forum;
-using PortfolioApi.DbContexts;
 using PortfolioApi.Entities.Forum;
 using PortfolioApi.Models.Forum.ForumProfile;
 using PortfolioApi.Models.Forum.Post;

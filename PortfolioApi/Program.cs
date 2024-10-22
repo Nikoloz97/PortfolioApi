@@ -21,14 +21,19 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ForumContext>(
-    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:ForumDBConnectionString"]));
+builder.Services.AddDbContext<UserContext>(options =>
+      options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
-builder.Services.AddDbContext<UserContext>(
-    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:UserDBConnectionString"]));
+// TODO: Remove
 
-builder.Services.AddDbContext<GeoGameContext>(
-    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:GeoGameDBConnectionString"]));
+//builder.Services.AddDbContext<ForumContext>(
+//    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:ForumDBConnectionString"]));
+
+//builder.Services.AddDbContext<UserContext>(
+//    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:UserDBConnectionString"]));
+
+//builder.Services.AddDbContext<GeoGameContext>(
+//    dbContextOptions => dbContextOptions.UseSqlite(builder.Configuration["ConnectionStrings:GeoGameDBConnectionString"]));
 
 
 /* Repositories */
