@@ -25,6 +25,9 @@ namespace PortfolioApi.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // TODO: Remove? This might be unnecessary - it was a database issue 
+            modelBuilder.Entity<User>().Property(u => u.UserId).ValueGeneratedOnAdd();
+
             // TODO: Remove (also, why does this not seed anything on users fetch?) 
 
             // User 

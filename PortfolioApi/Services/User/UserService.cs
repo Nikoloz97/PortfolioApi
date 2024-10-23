@@ -84,6 +84,8 @@ namespace PortfolioApi.Services.User
 
             var newUserEntity = await _userRepository.CreateUserAsync(newUserEntityToCreate);
 
+            // TODO: Do we want this here? 
+            // Should FP be automatically created when user is created? Or should we give user the option whether they want it? 
             await _forumProfileService.CreateForumProfileAsync(newUserEntity.UserId, newUserEntity.Username, newUserEntity.ProfileURL);
 
             var newUserDto = _mapper.Map<UserDto_Return>(newUserEntity);
@@ -103,6 +105,8 @@ namespace PortfolioApi.Services.User
         {
             var passwordHasher = new PasswordHasher<UserDto_Creation>();
             var result = passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
+
+            // TODO: Create hashing error exception 
 
             return result == PasswordVerificationResult.Success;
         }
