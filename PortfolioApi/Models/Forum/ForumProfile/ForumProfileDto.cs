@@ -1,5 +1,4 @@
-﻿using PortfolioApi.Entities;
-using PortfolioApi.Models.Forum.Post;
+﻿using PortfolioApi.Models.Forum.Post;
 
 namespace PortfolioApi.Models.Forum.ForumProfile
 {
@@ -25,10 +24,9 @@ namespace PortfolioApi.Models.Forum.ForumProfile
         {
             get { return Followings.Count; }
         }
-
         public ICollection<InterestDto> Interests { get; set; } = new List<InterestDto>();
         public ICollection<PostDto> Posts { get; set; } = new List<PostDto>();
-        public ICollection<FollowerDto> Followers { get; set; } = new List<FollowerDto>();
-        public ICollection<FollowingDto> Followings { get; set; } = new List<FollowingDto>();
+        public ICollection<FollowDto> Followers { get; set; } = new List<FollowDto>();
+        public ICollection<FollowDto> Followings { get; set; } = new List<FollowDto>();
     }
 }

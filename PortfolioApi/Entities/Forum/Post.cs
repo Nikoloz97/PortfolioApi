@@ -27,18 +27,16 @@ namespace PortfolioApi.Entities.Forum
         [Range(0, 1_000_000)]
         public int Likes { get; set; }
         [Required]
-        [Range(0, 1_000)]
+        [Range(0, 1_000_000)]
         public int Flags { get; set; }
-
-        [MaxLength(2000)]
-        public string? PhotoURL { get; set; }
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-        public Post(string title, string text)
+        public Post(string title, string text, DateTime postedDate)
         {
             Title = title;
             Text = text;
+            PostedDate = postedDate; 
         }
     }
 }

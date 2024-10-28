@@ -4,6 +4,7 @@ using PortfolioApi.DataAccess.Forum;
 using PortfolioApi.Entities.Forum;
 using PortfolioApi.Models.Forum.ForumProfile;
 using PortfolioApi.Models.Forum.Post;
+using System.Collections.Generic;
 
 namespace PortfolioApi.Services.Forum
 {
@@ -30,7 +31,24 @@ namespace PortfolioApi.Services.Forum
         public async Task<IEnumerable<ForumProfileDto>> GetForumProfilesWithPostsAsync()
         {
             var forumProfileEntities = await _forumRepository.GetForumProfilesWithPostsAsync();
-            return _mapper.Map<IEnumerable<ForumProfileDto>>(forumProfileEntities);
+            var forumProfileDtos = forumProfileEntities
+            .Select(fp => new ForumProfileDto
+            {
+                ForumProfileId = fp.ForumProfileId,
+                UserId = fp.UserId,
+                DisplayName = fp.DisplayName,
+                Age = fp.Age,
+                ProfileURL = fp.User.ProfileURL,
+                Interests = _mapper.Map<ICollection<InterestDto>>(fp.Interests),
+                Posts = _mapper.Map<ICollection<PostDto>>(fp.Posts),
+                Followers = fp.Follows.Where(f => f.FollowingForumProfileId == fp.ForumProfileId)
+                                      .Select(f => _mapper.Map<FollowDto>(f))
+                                      .ToList(),
+                Followings = fp.Follows.Where(f => f.FollowerForumProfileId == fp.ForumProfileId)
+                                       .Select(f => _mapper.Map<FollowDto>(f))
+                                       .ToList()
+            });
+            return forumProfileDtos;
         }
 
         public async Task<IEnumerable<ForumProfileDto>> GetForumProfilesWithPostsExceptUserAsync(int userId)
@@ -60,10 +78,7 @@ namespace PortfolioApi.Services.Forum
 
         public async Task<IActionResult> CreateForumProfileAsync(int userId, string username, string? profileURL)
         {
-            var newFPToCreateEntity = new ForumProfile(userId, username)
-            {
-                ProfileURL = profileURL
-            };
+            var newFPToCreateEntity = new ForumProfile(userId, username);
 
             var newlyCreatedFPEntity = await _forumRepository.CreateForumProfileAsync(newFPToCreateEntity, userId);
 

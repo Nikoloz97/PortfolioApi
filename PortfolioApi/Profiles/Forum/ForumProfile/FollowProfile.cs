@@ -3,11 +3,11 @@ using PortfolioApi.Models.Forum.ForumProfile;
 
 namespace PortfolioApi.Profiles.Forum.ForumProfile
 {
-    public class FollowerProfile : Profile
+    public class FollowProfile : Profile
     {
-        public FollowerProfile()
+        public FollowProfile()
         {
-            CreateMap<PortfolioApi.Entities.Forum.Follower, FollowerDto>();
+            CreateMap<PortfolioApi.Entities.Forum.Follow, FollowDto>();
         }
     }
 }
