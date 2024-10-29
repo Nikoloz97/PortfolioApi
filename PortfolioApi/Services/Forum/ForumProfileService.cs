@@ -41,8 +41,8 @@ namespace PortfolioApi.Services.Forum
                 ProfileURL = fp.User.ProfileURL,
                 Interests = _mapper.Map<ICollection<InterestDto>>(fp.Interests),
                 Posts = _mapper.Map<ICollection<PostDto>>(fp.Posts),
-                Followers = _mapper.Map<ICollection<FollowDto>>(fp.Followers),
-                Followings = _mapper.Map<ICollection<FollowDto>>(fp.Followings),
+                //Followers = _mapper.Map<ICollection<FollowDto>>(fp.Followers),
+                //Followings = _mapper.Map<ICollection<FollowDto>>(fp.Followings),
             });
             return forumProfileDtos;
         }

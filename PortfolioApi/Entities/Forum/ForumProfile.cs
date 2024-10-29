@@ -26,8 +26,8 @@ namespace PortfolioApi.Entities.Forum
 
         public ICollection<Post> Posts { get; set; } = new List<Post>();
 
-        public ICollection<Follow> Followers { get; set; } = new List<Follow>();
-        public ICollection<Follow> Followings { get; set; } = new List<Follow>();
+        //public ICollection<Follow> Followers { get; set; } = new List<Follow>();
+        //public ICollection<Follow> Followings { get; set; } = new List<Follow>();
 
 
         public ForumProfile(int userId, string displayName)
