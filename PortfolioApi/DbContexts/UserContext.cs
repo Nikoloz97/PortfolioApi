@@ -12,7 +12,7 @@ namespace PortfolioApi.DbContexts
         public DbSet<Interest> Interests { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Follow> Followers { get; set; }
+        public DbSet<Follow> Follows { get; set; }
         public DbSet<GeoCard> GeoCards { get; set; }
 
 
