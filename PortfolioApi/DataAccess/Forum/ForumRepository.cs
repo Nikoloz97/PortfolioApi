@@ -22,7 +22,8 @@ namespace PortfolioApi.DataAccess.Forum
                                         .Include(p => p.Interests)
                                         .Include(p => p.Posts)
                                         .ThenInclude(post => post.Comments)
-                                        .Include(p => p.Follows)
+                                        .Include(p => p.Followings)
+                                        .Include(p => p.Followers)
                                         .OrderBy(p => p.ForumProfileId)
                                         .ToListAsync();
         }
@@ -35,7 +36,8 @@ namespace PortfolioApi.DataAccess.Forum
                                     .Include(p => p.Interests)
                                     .Include(p => p.Posts)
                                     .ThenInclude(post => post.Comments)
-                                    .Include(p => p.Follows)
+                                    .Include(p => p.Followings)
+                                    .Include(p => p.Followers)
                                     .OrderBy(p => p.ForumProfileId)
                                     .ToListAsync();
         }
@@ -47,7 +49,8 @@ namespace PortfolioApi.DataAccess.Forum
                                     .Include(p => p.Interests)
                                     .Include(p => p.Posts)
                                     .ThenInclude(post => post.Comments)
-                                    .Include(p => p.Follows)
+                                    .Include(p => p.Followings)
+                                    .Include(p => p.Followers)
                                     .OrderBy(p => p.ForumProfileId)
                                     .ToListAsync();
         }
@@ -56,7 +59,8 @@ namespace PortfolioApi.DataAccess.Forum
         {
             return await _userContext.ForumProfiles
                                         .Include(p => p.Interests)
-                                        .Include(p => p.Follows)
+                                        .Include(p => p.Followings)
+                                        .Include(p => p.Followers)
                                         .Include(p => p.Posts)
                                         .Where(p => p.UserId == userId)
                                         .FirstOrDefaultAsync();
@@ -66,7 +70,8 @@ namespace PortfolioApi.DataAccess.Forum
         {
                 return await _userContext.ForumProfiles
                                             .Include(p => p.Interests)
-                                            .Include(p => p.Follows)
+                                            .Include(p => p.Followings)
+                                            .Include(p => p.Followers)
                                             .Include(p => p.Posts)
                                             .Where(p => p.ForumProfileId == forumProfileId)
                                             .FirstOrDefaultAsync();

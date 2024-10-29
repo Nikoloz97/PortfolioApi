@@ -24,8 +24,20 @@ namespace PortfolioApi.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // TODO: Remove? This might be unnecessary - it was a database issue 
-            modelBuilder.Entity<User>().Property(u => u.UserId).ValueGeneratedOnAdd();
+            base.OnModelCreating(modelBuilder);
+
+            // Configure the Follow entity
+            modelBuilder.Entity<Follow>()
+                .HasOne(f => f.FollowerForumProfile) // One side of the relationship
+                .WithMany(fp => fp.Followers) // The collection on the ForumProfile that corresponds to this relationship
+                .HasForeignKey(f => f.FollowerForumProfileId) // The foreign key in the Follow entity
+                .OnDelete(DeleteBehavior.Restrict); // Configure the delete behavior as needed
+
+            modelBuilder.Entity<Follow>()
+                .HasOne(f => f.FollowingForumProfile) // The other side of the relationship
+                .WithMany(p => p.Followings) // The collection on the ForumProfile that corresponds to this relationship
+                .HasForeignKey(f => f.FollowingForumProfileId) // The foreign key in the Follow entity
+                .OnDelete(DeleteBehavior.Restrict); // Configure the delete behavior as needed
 
             // TODO: Remove (also, why does this not seed anything on users fetch?) 
 
@@ -265,7 +277,7 @@ namespace PortfolioApi.DbContexts
             //        OptionFour = "China",
             //    }
             //    );
-            base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
         }
     }
 
