@@ -12,8 +12,8 @@ using PortfolioApi.DbContexts;
 namespace PortfolioApi.Migrations.User
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20241029022059_created_forumprofile_follow_relationship_onmodelcreating")]
-    partial class created_forumprofile_follow_relationship_onmodelcreating
+    [Migration("20241029031410_added_followers_followings")]
+    partial class added_followers_followings
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

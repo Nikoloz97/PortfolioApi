@@ -5,7 +5,7 @@
 namespace PortfolioApi.Migrations.User
 {
     /// <inheritdoc />
-    public partial class created_forumprofile_follow_relationship_onmodelcreating : Migration
+    public partial class added_followers_followings : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
