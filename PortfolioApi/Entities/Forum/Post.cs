@@ -30,6 +30,8 @@ namespace PortfolioApi.Entities.Forum
         [Range(0, 1_000_000)]
         public int Flags { get; set; }
 
+        public string? PhotoURL { get; set; }
+
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public Post(string title, string text, DateTime postedDate)
