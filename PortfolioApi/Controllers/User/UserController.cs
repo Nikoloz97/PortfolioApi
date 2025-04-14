@@ -15,8 +15,6 @@ namespace PortfolioApi.Controllers.User
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        // Get
-
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -25,7 +23,6 @@ namespace PortfolioApi.Controllers.User
             return Ok(userDtos);
         }
 
-        // Post
 
         [HttpPost("login", Name = "GetUser")]
         public async Task<IActionResult> GetUser([FromBody] LoginRequestDto loginRequest)
