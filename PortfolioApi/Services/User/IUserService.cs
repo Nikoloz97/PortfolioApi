@@ -8,7 +8,8 @@ namespace PortfolioApi.Services.User
         // UserService
         Task<IEnumerable<UserDto_Return>> GetAllUsersAsync();
         Task<UserDto_Return> CreateUserAsync(UserDto_Creation newUser);
-        Task<UserDto_Return> GetUserAsync(LoginRequestDto loginRequest);
+        //Task<UserDto_Return> GetUserAsync(LoginRequestDto loginRequest);
+        Task<AuthResult> AuthenticateUserAsync(LoginRequestDto loginRequest);
 
         // StorageService
         Task<string> UploadImage(IFormFile imageFile, string fileName);

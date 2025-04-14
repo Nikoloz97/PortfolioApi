@@ -27,9 +27,26 @@ namespace PortfolioApi.Controllers.User
         [HttpPost("login", Name = "GetUser")]
         public async Task<IActionResult> GetUser([FromBody] LoginRequestDto loginRequest)
         {
-            var userDto = await _userService.GetUserAsync(loginRequest);
+            var result = await _userService.AuthenticateUserAsync(loginRequest);
 
-            return Ok(userDto);
+            // Set JWT token in httpOnly cookie
+            if (result.Success)
+            {
+                // Set cookie with the token
+                HttpContext.Response.Cookies.Append("auth_token", result.Token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true, // For HTTPS only
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddHours(1) // Short expiration time
+                });
+
+                // Don't return the token in the response body
+                return Ok(result.User);
+            }
+
+            // Generic error to not leak information
+            return Unauthorized(new { message = "Invalid username or password" });
         }
 
         [HttpPost]

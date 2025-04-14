@@ -15,9 +15,10 @@ namespace PortfolioApi.Services.User
         private readonly IForumProfileService _forumProfileService;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IPasswordHasher<Entities.User.User> _passwordHasher;
 
         public UserService(IMapper mapper, IUserRepository userRepository,
-            IAuthService authService, IForumProfileService forumProfileService
+            IAuthService authService, IPasswordHasher<Entities.User.User> passwordHasher, IForumProfileService forumProfileService
             )
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
@@ -29,6 +30,7 @@ namespace PortfolioApi.Services.User
             string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=portfolioappmedia;AccountKey=VrsNP02howxuz2XojXM4NAfYJZsIiAbSoccQvf8lXdgLTq/11qjKyl+sJn854VQ+9hW7oZ7nOy5w+ASt+pzAaQ==;EndpointSuffix=core.windows.net";
             string containerName = "profileimagescontainer";
             _storageService = new AzureStorageService(storageConnectionString, containerName);
+            _passwordHasher = passwordHasher;
         }
 
         // User
@@ -43,25 +45,60 @@ namespace PortfolioApi.Services.User
             return UserDtos;
         }
 
-        // Post
-
-        public async Task<UserDto_Return> GetUserAsync(LoginRequestDto loginRequest)
+        public async Task<AuthResult> AuthenticateUserAsync(LoginRequestDto loginRequest)
         {
-            var potentialUserEntity = await _userRepository.GetUserAsync(loginRequest.Username) ?? throw new UsernameNotFoundException();
+            // take the same amount of time regardless of whether the user exists
+            var userExists = await _userRepository.DoesUsernameExistAsync(loginRequest.Username);
 
-            if (VerifyPassword(loginRequest.Password, potentialUserEntity.Password))
+            if (!userExists)
             {
-                var userDto = _mapper.Map<UserDto_Return>(potentialUserEntity);
+                // dummy password verification to prevent timing attacks
+                _passwordHasher.VerifyHashedPassword(null,
+                    "$PBKDF2$V=3$I=10000$GasJ4AkSLPgPKVnqTVLgYw==$XGUL7XiG1m/UOoQuw+8nF3KwvLIzVYLMbw1H8TJYNp4=",
+                    loginRequest.Password);
 
-                userDto.Token = await _authService.GenerateJwtToken(userDto);
-
-                return userDto;
+                return new AuthResult { Success = false };
             }
-            else
+
+            var user = await _userRepository.GetUserAsync(loginRequest.Username);
+            var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(
+                null, user.Password, loginRequest.Password);
+
+            if (passwordVerificationResult == PasswordVerificationResult.Success)
             {
-                throw new PasswordNotFoundException();
+                var userDto = _mapper.Map<UserDto_Return>(user);
+                var token = await _authService.GenerateJwtToken(userDto);
+
+                return new AuthResult
+                {
+                    Success = true,
+                    User = userDto,
+                    Token = token
+                };
             }
+
+            return new AuthResult { Success = false };
         }
+
+
+
+        //public async Task<UserDto_Return> GetUserAsync(LoginRequestDto loginRequest)
+        //{
+        //    var potentialUserEntity = await _userRepository.GetUserAsync(loginRequest.Username) ?? throw new UsernameNotFoundException();
+
+        //    if (VerifyPassword(loginRequest.Password, potentialUserEntity.Password))
+        //    {
+        //        var userDto = _mapper.Map<UserDto_Return>(potentialUserEntity);
+
+        //        userDto.Token = await _authService.GenerateJwtToken(userDto);
+
+        //        return userDto;
+        //    }
+        //    else
+        //    {
+        //        throw new PasswordNotFoundException();
+        //    }
+        //}
 
         public async Task<UserDto_Return> CreateUserAsync(UserDto_Creation newUser)
         {

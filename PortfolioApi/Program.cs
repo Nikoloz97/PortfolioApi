@@ -9,6 +9,11 @@ using PortfolioApi.Services.Email;
 using PortfolioApi.Services.Authentication;
 using PortfolioApi.Services.Forum;
 using PortfolioApi.Services.GeoGame;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+using PortfolioApi.Entities.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +70,11 @@ builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 
 builder.Services.AddSingleton(builder.Configuration);
 
+/* Misc */
+
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+
 // Enforce HTTPS
 builder.Services.AddHttpsRedirection(options =>
 {
@@ -100,10 +110,39 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseHsts();
+    // Enforced HTTPS
+    app.UseHsts(); 
 }
 
 app.UseHttpsRedirection();
+
+// Authorization Middleware
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
+        };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                context.Token = context.Request.Cookies["auth_token"];
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
