@@ -3,7 +3,7 @@ using Microsoft.Azure.Storage.Blob;
 
 namespace PortfolioApi.Services
 {
-    public class AzureStorageService
+    public class AzureStorageService : IAzureStorageService
     {
         private CloudBlobContainer _blobContainer;
 

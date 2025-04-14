@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using PortfolioApi.Entities.User;
+using PortfolioApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +72,14 @@ builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 builder.Services.AddSingleton(builder.Configuration);
 
 /* Misc */
+
+builder.Services.AddScoped<IAzureStorageService>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var connectionString = configuration["AzureStorage:ConnectionString"];
+    var containerName = configuration["AzureStorage:ProfileImagesContainer"];
+    return new AzureStorageService(connectionString, containerName);
+});
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 

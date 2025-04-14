@@ -10,7 +10,7 @@ namespace PortfolioApi.Services.User
 {
     public class UserService : IUserService
     {
-        private readonly AzureStorageService _storageService;
+        private readonly IAzureStorageService _storageService;
         private readonly IAuthService _authService;
         private readonly IForumProfileService _forumProfileService;
         private readonly IUserRepository _userRepository;
@@ -18,18 +18,15 @@ namespace PortfolioApi.Services.User
         private readonly IPasswordHasher<Entities.User.User> _passwordHasher;
 
         public UserService(IMapper mapper, IUserRepository userRepository,
-            IAuthService authService, IPasswordHasher<Entities.User.User> passwordHasher, IForumProfileService forumProfileService
+            IAuthService authService, IPasswordHasher<Entities.User.User> passwordHasher, IForumProfileService forumProfileService,
+            IAzureStorageService storageService
             )
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _forumProfileService = forumProfileService ?? throw new ArgumentNullException(nameof(authService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-
-            // TODO: Find why this works without dependency injecting _storageService  
-            string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=portfolioappmedia;AccountKey=VrsNP02howxuz2XojXM4NAfYJZsIiAbSoccQvf8lXdgLTq/11qjKyl+sJn854VQ+9hW7oZ7nOy5w+ASt+pzAaQ==;EndpointSuffix=core.windows.net";
-            string containerName = "profileimagescontainer";
-            _storageService = new AzureStorageService(storageConnectionString, containerName);
+            _storageService = storageService;
             _passwordHasher = passwordHasher;
         }
 
