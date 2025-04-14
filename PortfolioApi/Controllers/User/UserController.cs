@@ -38,18 +38,10 @@ namespace PortfolioApi.Controllers.User
         [HttpPost]
         public async Task<ActionResult<UserDto_Return>> CreateUser([FromForm] UserDto_Creation newUser)
         {
-            var newUserDto = await _userService.CreateUserAsync(newUser);
+            await _userService.CreateUserAsync(newUser);
 
-            return CreatedAtRoute("GetUser",
-                new
-                {
-                    username = newUserDto.Username,
-                    password = newUserDto.Password
-                },
-                newUserDto);
+            return Ok();
         }
-
-
 
     }
 }

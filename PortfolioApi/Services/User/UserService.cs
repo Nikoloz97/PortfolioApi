@@ -86,7 +86,7 @@ namespace PortfolioApi.Services.User
 
             // TODO: Do we want this here? 
             // Should FP be automatically created when user is created? Or should we give user the option whether they want it? 
-            await _forumProfileService.CreateForumProfileAsync(newUserEntity.UserId, newUserEntity.Username, newUserEntity.ProfileURL);
+            // await _forumProfileService.CreateForumProfileAsync(newUserEntity.UserId, newUserEntity.Username, newUserEntity.ProfileURL);
 
             var newUserDto = _mapper.Map<UserDto_Return>(newUserEntity);
 
