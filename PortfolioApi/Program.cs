@@ -65,6 +65,24 @@ builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 
 builder.Services.AddSingleton(builder.Configuration);
 
+// Enforce HTTPS
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+    options.HttpsPort = 443;
+});
+
+// Add HSTS for production
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHsts(options =>
+    {
+        options.Preload = true;
+        options.IncludeSubDomains = true;
+        options.MaxAge = TimeSpan.FromDays(365);
+    });
+}
+
 var app = builder.Build();
 
 app.UseCors("corsapp");
@@ -80,7 +98,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ExceptionMiddleware>();
 
-
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
 
