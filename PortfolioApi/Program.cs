@@ -132,11 +132,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSecretKey"])),
+            ValidateIssuer = false,
+            ValidateAudience = false,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
@@ -150,6 +148,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             }
         };
     });
+
+// Sendgrid
+builder.Services.AddSingleton<IEmailService>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    return new EmailService(configuration);
+});
+
+// AzureStorage
+builder.Services.AddScoped<IAzureStorageService>(provider =>
+{
+    var configuration = provider.GetRequiredService<IConfiguration>();
+    var connectionString = configuration["AzureStorageConnectionString"];
+    var containerName = configuration["AzureStorage:ProfileImagesContainer"];
+    return new AzureStorageService(connectionString, containerName);
+});
 
 app.UseAuthentication();
 

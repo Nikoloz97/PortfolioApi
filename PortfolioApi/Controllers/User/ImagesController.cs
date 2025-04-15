@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Storage.Shared.Protocol;
 using PortfolioApi.Services;
 
 namespace PortfolioApi.Controllers.User
@@ -7,13 +8,11 @@ namespace PortfolioApi.Controllers.User
     [Route("api/forum/[controller]")]
     public class ImagesController : Controller
     {
-        private readonly AzureStorageService _storageService;
+        private readonly IAzureStorageService _storageService;
 
-        public ImagesController()
+        public ImagesController(IAzureStorageService storageService)
         {
-            string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=portfolioappmedia;AccountKey=VrsNP02howxuz2XojXM4NAfYJZsIiAbSoccQvf8lXdgLTq/11qjKyl+sJn854VQ+9hW7oZ7nOy5w+ASt+pzAaQ==;EndpointSuffix=core.windows.net";
-            string containerName = "profileimagescontainer";
-            _storageService = new AzureStorageService(storageConnectionString, containerName);
+            _storageService = storageService;
         }
 
         [HttpPost("upload")]
@@ -37,7 +36,7 @@ namespace PortfolioApi.Controllers.User
             if (imageStream == null)
                 return NotFound();
 
-            return File(imageStream, "image/jpeg"); // Adjust the content type based on your image type
+            return File(imageStream, "image/jpeg");
         }
     }
 }

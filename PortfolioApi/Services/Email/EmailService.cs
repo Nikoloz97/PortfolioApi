@@ -19,8 +19,7 @@ namespace PortfolioApi.Services.Email
 
         public async Task SendEmailAsync(EmailDto email)
         {
-            // TODO: move apikey to azure keyvault 
-            var apiKey = _configuration.GetSection("MyApiSettings").GetValue<string>("ApiKey");
+            var apiKey = _configuration["SendGridApiKey"];
 
             var client = new SendGridClient(apiKey);
 

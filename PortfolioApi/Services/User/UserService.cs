@@ -77,26 +77,6 @@ namespace PortfolioApi.Services.User
             return new AuthResult { Success = false };
         }
 
-
-
-        //public async Task<UserDto_Return> GetUserAsync(LoginRequestDto loginRequest)
-        //{
-        //    var potentialUserEntity = await _userRepository.GetUserAsync(loginRequest.Username) ?? throw new UsernameNotFoundException();
-
-        //    if (VerifyPassword(loginRequest.Password, potentialUserEntity.Password))
-        //    {
-        //        var userDto = _mapper.Map<UserDto_Return>(potentialUserEntity);
-
-        //        userDto.Token = await _authService.GenerateJwtToken(userDto);
-
-        //        return userDto;
-        //    }
-        //    else
-        //    {
-        //        throw new PasswordNotFoundException();
-        //    }
-        //}
-
         public async Task<UserDto_Return> CreateUserAsync(UserDto_Creation newUser)
         {
             string? imageUrl = null;
