@@ -91,7 +91,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors(options => options.AddPolicy("corsapp", policy =>
 {
     policy
-        .WithOrigins("http://localhost:3000", "https://nicksportfolio.azurewebsites.net")
+        .WithOrigins("http://localhost:3000", "https://nicksportfolioreact.azurewebsites.net")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials();
