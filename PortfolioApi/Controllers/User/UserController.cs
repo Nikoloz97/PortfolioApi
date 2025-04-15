@@ -41,7 +41,6 @@ namespace PortfolioApi.Controllers.User
                     Expires = DateTime.UtcNow.AddHours(1) // Short expiration time
                 });
 
-                // Don't return the token in the response body
                 return Ok(result.User);
             }
 

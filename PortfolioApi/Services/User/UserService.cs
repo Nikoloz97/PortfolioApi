@@ -44,7 +44,6 @@ namespace PortfolioApi.Services.User
 
         public async Task<AuthResult> AuthenticateUserAsync(LoginRequestDto loginRequest)
         {
-            // take the same amount of time regardless of whether the user exists
             var userExists = await _userRepository.DoesUsernameExistAsync(loginRequest.Username);
 
             if (!userExists)
@@ -113,16 +112,6 @@ namespace PortfolioApi.Services.User
         {
             var passwordHasher = new PasswordHasher<UserDto_Creation>(); 
             return passwordHasher.HashPassword(null, password);
-        }
-
-        private bool VerifyPassword(string providedPassword, string hashedPassword)
-        {
-            var passwordHasher = new PasswordHasher<UserDto_Creation>();
-            var result = passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
-
-            // TODO: Create hashing error exception 
-
-            return result == PasswordVerificationResult.Success;
         }
 
         public async Task<bool> DoesUsernameExistAsync(string username)
