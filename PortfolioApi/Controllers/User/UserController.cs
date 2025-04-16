@@ -45,7 +45,14 @@ namespace PortfolioApi.Controllers.User
             }
 
             // Generic error to not leak information
-            return Unauthorized(new { message = "Invalid username or password" });
+            return Unauthorized(new
+                {
+                error = new
+                {
+                    topic = "Invalid Credentials",
+                    message = "The password for username entered does not exist. Please try again"
+                }
+                });
         }
 
         [HttpPost]
